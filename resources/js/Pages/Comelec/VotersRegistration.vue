@@ -30,13 +30,10 @@
                                 <input type="hidden" name="course">
                                 <select class="form-select" aria-label="Default select example" v-model="course">
                                     <option value="" disabled hidden selected>Select</option>
-                                    <option value="BBTLEDHE">BBTLEDHE</option>
-                                    <option value="BSBAHRM">BSBAHRM</option>
-                                    <option value="BSBA-MM">BSBA-MM</option>
-                                    <option value="BSENTREP">BSENTREP</option>
-                                    <option value="BSIT">BSIT</option>
-                                    <option value="BPAPFM">BPAPFM</option>
-                                    <option value="DOMTMOM">DOMTMOM</option>
+                                    <option v-if="!isCoursesLoading" v-for="(course, courseIndex) in coursesData" :key="courseIndex" 
+                                        :value="course.CourseCode">
+                                        {{ course.CourseCode }}
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -135,6 +132,7 @@
     import DragAndDrop from '../../Shared/DragAndDrop.vue';
 
     import axios from 'axios';
+    import { useQuery } from "@tanstack/vue-query";
 
     export default {
         setup() {
@@ -156,6 +154,22 @@
             const notAcceptedMessage = ref('please upload a csv/excel file.');
             const extensions = ref('application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv') 
 
+            const fetchAllCourses = async () => {
+                const response = await axios.get(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/courses/all`);
+                console.log(`All courses fetched. Duration: ${response.duration}`)
+
+                return response.data.courses
+            }
+
+            const { data: coursesData,
+                    isLoading: isCoursesLoading,
+                    isError: isCoursesError,
+                    error: coursesError,} = 
+                    useQuery({
+                        queryKey: [`fetchAllCourses`],
+                        queryFn: fetchAllCourses,
+                    })
+
             return {
                 student_number,
                 course,
@@ -173,6 +187,11 @@
                 is_loading_attachments,
                 notAcceptedMessage,
                 extensions,
+
+                coursesData,
+                isCoursesLoading,
+                isCoursesError,
+                coursesError,
             }
         },
         components: { Navbar, Sidebar, ActionButton, SearchBarAndFilter, BaseContainer, BaseTable, DragAndDrop },

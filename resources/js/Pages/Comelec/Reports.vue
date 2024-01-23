@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-4" style="display: flex; align-items: center;">
                             <select class="form-select" aria-label="Default select example" v-model="select_election_input" @change="electionInputChanged">
-                                <option value="" disabled hidden selected>Select Election</option>
+                                <option value="" disabled hidden selected>No Election Available</option>
                                 <option v-if="!isElectionsDataLoading" v-for="(election, index) in electionsData" :key="index" :value="election.ElectionId">
                                     {{ election.ElectionName }}
                                 </option>
@@ -172,7 +172,7 @@
                                         <span class="motto">“{{ selected_candidate_motto }}”</span>
                                         <span class="platform-label">PLATFORM:</span>
                                         <p class="platform">
-                                            Academic Excellence: Advocate for resources and programs that enhance the academic experience and help students reach their full potential.
+                                            Platform
                                         </p>
                                     </div>
                                 </div>
@@ -259,18 +259,12 @@
             const selected_candidate_motto = ref('');
             const selected_candidate_platform = ref('');
 
-            watch(select_election_input, (newValue, oldValue) => {
-                if (newValue !== oldValue) {
-                    console.log('Election input changed');
-                }
-            });
-
             const fetchElections = async () => {
                 const response = await axios.get(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/election/all`);
                 console.log(`Elections table fetched successfully. Duration: ${response.duration}`)
 
-                select_election_input.value = response.data.elections[0].ElectionId;
-                initial_election_selected.value = true;
+                //select_election_input.value = response.data.elections[0].ElectionId;
+                //initial_election_selected.value = true;
 
                 return response.data.elections;
             }
@@ -283,6 +277,13 @@
                         queryFn: fetchElections,
                     });
 
+            watch(isElectionsDataSuccess, (newValue, oldValue) => {
+                if (newValue) {
+                    console.log(electionsData.value[0]);
+                    select_election_input.value = electionsData.value[0].ElectionId;
+                    initial_election_selected.value = true;
+                }
+            })
 
             // Chart stuffs
 
@@ -351,13 +352,13 @@
             const instance_coc = null;
             const data_coc = [
                 { 
-                    value: 22, 
+                    value: 0, 
                     label: 'Approved', 
                     color: '#C9FFC5', 
                     borderColor: '#70AD47'
                 },
                 { 
-                    value: 19, 
+                    value: 0, 
                     label: 'Rejected', 
                     color: 'rgba(255, 99, 132, 0.4)', 
                     borderColor: 'rgba(255, 99, 132, 1)' 
@@ -367,13 +368,13 @@
             const instance_partylist = null;
             const data_partylist = [
                 { 
-                    value: 22, 
+                    value: 0, 
                     label: 'Approved', 
                     color: '#C9FFC5', 
                     borderColor: '#70AD47'
                 },
                 { 
-                    value: 19, 
+                    value: 0, 
                     label: 'Rejected', 
                     color: 'rgba(255, 99, 132, 0.4)', 
                     borderColor: 'rgba(255, 99, 132, 1)' 
@@ -383,13 +384,13 @@
             const instance_candidate_votes = null;
             const data_candidate_votes = [
                 { 
-                    value: 22, 
+                    value: 0, 
                     label: 'Votes', 
                     color: '#C9FFC5', 
                     borderColor: '#70AD47'
                 },
                 { 
-                    value: 19, 
+                    value: 0, 
                     label: 'Abstained', 
                     color: 'rgba(255, 99, 132, 0.4)', 
                     borderColor: 'rgba(255, 99, 132, 1)' 
@@ -897,7 +898,8 @@
                     labels: this.data_candidate_votes_by_course.map(item => item.label),
                     datasets: [{
                         label: '',
-                        data: [5, 7, 3, 10, 5, 12, 8],
+                        //data: [5, 7, 3, 10, 5, 12, 8],
+                        data: [],
                         backgroundColor: '#FFC971',
                         borderColor: '#EA9100',
                         pointBackgroundColor: '#D2262D',
@@ -969,7 +971,8 @@
                     labels: this.data_candidate_ratings.map(item => item.label),
                     datasets: [{
                         label: '',
-                        data: [5, 7, 3, 10, 5, 12, 8],
+                        //data: [5, 7, 3, 10, 5, 12, 8],
+                        data: [],
                         borderColor: '#03ABFF',
                         pointBackgroundColor: '#0088CC',
                         pointBorderColor: '#0088CC',
@@ -1126,7 +1129,7 @@
 
                     // update voter course distribution chart
 
-                    election.CourseDistribution.forEach(course => {
+                    /*election.CourseDistribution.forEach(course => {
                         const courseName = Object.keys(course)[0];
                         const courseValue = course[courseName];
 
@@ -1140,7 +1143,7 @@
                     });
 
                     this.instance_voter_course.data.datasets[0].data = this.data_voter_course.map(item => item.value);
-                    this.instance_voter_course.update();
+                    this.instance_voter_course.update();*/
 
                     // update coc chart
 
@@ -1166,13 +1169,13 @@
 
                     this.data_partylist = [
                         { 
-                            value: election.NumberOfApprovedPartylist + 3, 
+                            value: election.NumberOfApprovedPartylist, 
                             label: 'Approved', 
                             color: '#C9FFC5', 
                             borderColor: '#70AD47'
                         },
                         { 
-                            value: election.NumberOfRejectedPartylist + 2, 
+                            value: election.NumberOfRejectedPartylist, 
                             label: 'Rejected', 
                             color: 'rgba(255, 99, 132, 0.4)', 
                             borderColor: 'rgba(255, 99, 132, 1)' 
@@ -1192,6 +1195,24 @@
                     this.selected_candidate_image = candidate.DisplayPhoto;
                     this.selected_candidate_partylist = candidate.Partylist;
                     this.selected_candidate_motto = candidate.Motto;
+
+                    this.data_candidate_votes = [
+                        { 
+                            value: candidate.Votes, 
+                            label: 'Votes', 
+                            color: '#C9FFC5', 
+                            borderColor: '#70AD47'
+                        },
+                        { 
+                            value: candidate.Abstains, 
+                            label: 'Abstained', 
+                            color: 'rgba(255, 99, 132, 0.4)', 
+                            borderColor: 'rgba(255, 99, 132, 1)' 
+                        },
+                    ];
+
+                    this.instance_candidate_votes.data.datasets[0].data = this.data_candidate_votes.map(item => item.value);
+                    this.instance_candidate_votes.update();
                 })
             },
         }

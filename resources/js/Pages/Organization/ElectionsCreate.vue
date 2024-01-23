@@ -329,6 +329,10 @@
                 // Return an array of the next five years
                 return Array.from({length: 5}, (_, i) => currentYear + i);
             },
+            getCurrentYear(){
+                const currentYear = new Date().getFullYear();
+                return currentYear;
+            },
             addNewPosition() {
                 this.position_count = this.position_count + 1;
                 const newPosition = {
