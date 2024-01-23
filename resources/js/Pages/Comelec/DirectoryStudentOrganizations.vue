@@ -182,7 +182,7 @@
     import BaseContainer from '../../Shared/BaseContainer.vue';
     import BaseTable from '../../Shared/BaseTable.vue';
     import ImageSkeleton from '../../Skeletons/ImageSkeleton.vue';
-    import ToolTip from '../Shared/Tooltip.vue'
+    import ToolTip from '../../Shared/Tooltip.vue'
 
     import { useQuery } from "@tanstack/vue-query";
     import axios from 'axios';

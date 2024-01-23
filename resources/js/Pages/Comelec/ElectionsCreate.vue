@@ -217,7 +217,7 @@
     import SearchBarAndFilter from '../../Shared/SearchBarAndFilter.vue';
     import BaseContainer from '../../Shared/BaseContainer.vue';
     import BaseTable from '../../Shared/BaseTable.vue';
-    import ToolTip from '../Shared/Tooltip.vue'
+    import ToolTip from '../../Shared/Tooltip.vue'
 
     import axios from 'axios';
 
