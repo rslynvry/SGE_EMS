@@ -170,11 +170,11 @@
                         </div>
 
                         <label class="form-label" for="position-quantity">Position Quantity</label>
-                        <Tooltip class="mx-2">
+                        <ToolTip class="mx-2">
                             <slot>
                                 How many can run and win for this position.
                             </slot>
-                        </Tooltip>
+                        </ToolTip>
                         <input type="number" min="1" class="form-control position-quantity margin" v-model.number="position.quantity">
 
                         <div class="row button">
@@ -217,7 +217,7 @@
     import SearchBarAndFilter from '../../Shared/SearchBarAndFilter.vue';
     import BaseContainer from '../../Shared/BaseContainer.vue';
     import BaseTable from '../../Shared/BaseTable.vue';
-    import Tooltip from '../../Shared/Tooltip.vue';
+    import ToolTip from '../Shared/Tooltip.vue'
 
     import axios from 'axios';
 
@@ -415,7 +415,7 @@
                     organizationError,
                 }
         },
-        components: { Navbar, Sidebar, ActionButton, SearchBarAndFilter, BaseContainer, BaseTable, Tooltip },
+        components: { Navbar, Sidebar, ActionButton, SearchBarAndFilter, BaseContainer, BaseTable, ToolTip },
         props: {
             full_name: String,
             user_role: String,

@@ -69,11 +69,11 @@
             <div class="col-6">
                 <div class="note">
                     <span>Set the current organization officers.</span>
-                    <Tooltip class="mx-3">
+                    <ToolTip class="mx-3">
                         <slot>
                             Enter the student number of the desired officer. When you create election, and select this organization, these positions will reflect on the positions of the election.
                         </slot>
-                    </Tooltip>
+                    </ToolTip>
                 </div>
                 
                 <div class="content row flex-column">
@@ -182,7 +182,7 @@
     import BaseContainer from '../../Shared/BaseContainer.vue';
     import BaseTable from '../../Shared/BaseTable.vue';
     import ImageSkeleton from '../../Skeletons/ImageSkeleton.vue';
-    import Tooltip from '../../Shared/Tooltip.vue';
+    import ToolTip from '../Shared/Tooltip.vue'
 
     import { useQuery } from "@tanstack/vue-query";
     import axios from 'axios';
@@ -392,7 +392,7 @@
             BaseContainer,
             BaseTable,
             ImageSkeleton,
-            Tooltip,
+            ToolTip,
         },
         methods: {
             returnDirectory() {
