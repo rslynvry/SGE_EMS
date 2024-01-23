@@ -21,26 +21,18 @@ class CheckAuthComelec
      */
     public function handle(Request $request, Closure $next): Response
     {   
-        $token = $request->cookie('jwt_token');
+        $token = $request->session()->get('student_number');
 
         try {
             // If not yet logged out
-            if ($request->cookie('user_info')) { 
-                // Get user role and restrict & redirect back if not comelec
-                $user_info_cookie = json_decode($request->cookie('user_info'), true);
-                $user_role = $user_info_cookie['user_role'];
+            if ($token) { 
+                $user_role = $request->session()->get('user_role');
 
                 if ($user_role !== 'comelec') {
                     return redirect('organization/elections');
                 }
             }
-            else {
-                // If logged out by the user by clicking the logout button
-                if ($request->cookie('logout_pass')) {
-                    $logout_cookie = cookie()->forget('logout_pass');
-                    return redirect()->route('view.login')->withCookie($logout_cookie);
-                }
-                
+            else {                
                 // If token was expired, not logged out
                 return redirect()->route('view.login')->with('token_invalid', 'Your authentication token has expired. Please login again.');
             }
