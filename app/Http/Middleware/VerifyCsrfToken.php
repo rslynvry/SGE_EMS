@@ -12,6 +12,11 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
+        '/inertia/route',
+        '/login/auth/comelec',
+        '/login/auth/officer',
+        '/login',
+        '/logout',
         //
     ];
 }

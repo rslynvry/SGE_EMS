@@ -6,6 +6,8 @@ import NProgress from 'nprogress'
 import axios from 'axios';
 import { VueQueryPlugin } from '@tanstack/vue-query'; 
 
+axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
 router.on('start', () => NProgress.start())
 router.on('finish', () => NProgress.done())
 
