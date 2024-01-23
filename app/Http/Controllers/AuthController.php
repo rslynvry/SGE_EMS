@@ -34,8 +34,8 @@ class AuthController extends Controller
         // Put student number in a session
         //$request->session()->put('student_number', $request->StudentNumber);
                
-        $user_info_cookie = cookie('user_info', $cookie_data, $cookie_minutes_lifetime, null, null, true, true, false, 'strict');
-        $cookie = cookie('jwt_token', $token, $cookie_minutes_lifetime, null, null, true, true, false, 'strict');
+        $user_info_cookie = cookie('user_info', $cookie_data, $cookie_minutes_lifetime, null, null, true, true, false, null);
+        $cookie = cookie('jwt_token', $token, $cookie_minutes_lifetime, null, null, true, true, false, null);
 
         return response()->json(['redirect' => $redirect])->withCookie($cookie)->withCookie($user_info_cookie);
     } 
@@ -56,8 +56,8 @@ class AuthController extends Controller
         // Put student number in a session
         //$request->session()->put('student_number', $request->StudentNumber);
                
-        $user_info_cookie = cookie('user_info', $cookie_data, $cookie_minutes_lifetime, null, null, true, true, false, 'strict');
-        $cookie = cookie('jwt_token', $token, $cookie_minutes_lifetime, null, null, true, true, false, 'strict');
+        $user_info_cookie = cookie('user_info', $cookie_data, $cookie_minutes_lifetime, null, null, true, true, false, null);
+        $cookie = cookie('jwt_token', $token, $cookie_minutes_lifetime, null, null, true, true, false, null);
 
         return response()->json(['redirect' => $redirect])->withCookie($cookie)->withCookie($user_info_cookie);
     } 
