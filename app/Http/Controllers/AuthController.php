@@ -31,18 +31,13 @@ class AuthController extends Controller
         $token = 'Authorized';
         $redirect = '/comelec/elections';
 
-        $request->session()->put('student_number', $request->StudentNumber);
-        $request->session()->put('user_role', 'comelec');
-
         // Put student number in a session
         //$request->session()->put('student_number', $request->StudentNumber);
                
-        //$user_info_cookie = cookie('user_info', $cookie_data, $cookie_minutes_lifetime);
-        //$cookie = cookie('jwt_token', $token, $cookie_minutes_lifetime);
+        $user_info_cookie = cookie('user_info', $cookie_data, $cookie_minutes_lifetime, null, null, true, true, false, null);
+        $cookie = cookie('jwt_token', $token, $cookie_minutes_lifetime, null, null, true, true, false, null);
 
-        //return response()->json(['redirect' => $redirect])->withCookie($cookie)->withCookie($user_info_cookie);
-
-        return response()->json(['redirect' => $redirect]);
+        return response()->json(['redirect' => $redirect])->withCookie($cookie)->withCookie($user_info_cookie);
     } 
 
     public function authOfficerLogin(Request $request)
@@ -61,20 +56,22 @@ class AuthController extends Controller
         // Put student number in a session
         //$request->session()->put('student_number', $request->StudentNumber);
                
-        $user_info_cookie = cookie('user_info', $cookie_data, $cookie_minutes_lifetime, null, null, true, true, false, null);
-        $cookie = cookie('jwt_token', $token, $cookie_minutes_lifetime, null, null, true, true, false, null);
+        $user_info_cookie = cookie('user_info', $cookie_data, $cookie_minutes_lifetime, null, null, true, true, false, 'strict');
+        $cookie = cookie('jwt_token', $token, $cookie_minutes_lifetime, null, null, true, true, false, 'strict');
 
         return response()->json(['redirect' => $redirect])->withCookie($cookie)->withCookie($user_info_cookie);
     } 
 
     public function logout(Request $request) {
         try { 
+            // Instruct client side to delete the cookies with withCookie() and redirect to login page
+            $cookie = cookie()->forget('jwt_token');
+            $user_info_cookie = cookie()->forget('user_info');
+            $logout_cookie = cookie('logout_pass', 'true', 1);
 
-            $request->session()->forget('student_number');
-            $request->session()->forget('user_role');
             return response()->json([
                 'logout' => 'true',
-            ]);
+            ])->withCookie($user_info_cookie)->withCookie($cookie)->withCookie($logout_cookie);
             
         }
         catch(Exception $e) {

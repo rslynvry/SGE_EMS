@@ -73,7 +73,15 @@
 
                             axios.post(`/login/auth/${user_role}`, this.form)
                                 .then(response => {
-                                    window.location.href = '/comelec/elections'
+                                    if (response.data.redirect) {
+                                        window.location.href = response.data.redirect;
+                                    }
+                                    else if (response.data.invalid) {
+                                        this.invalid = response.data.invalid;
+
+                                        this.loggingIn = false;
+                                        this.login_text = 'Login';
+                                    }
                                 })
                                 .catch(error => {
                                     // Too many requests, via throttle middleware of Laravel
