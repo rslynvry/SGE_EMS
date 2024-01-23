@@ -196,7 +196,7 @@
 
                         <div class="image">
                             <img v-if="!isCoCLoading" :src="CoCData.DisplayPhoto" @click="viewImage(CoCData.DisplayPhoto)" class="pic" draggable="false">
-                            <img v-else src="../../images/dog_placeholder.jpg" class="pic" draggable="false">
+                            <img v-else src="" class="pic" draggable="false">
                         </div>
 
                         <hr class="my-3">
