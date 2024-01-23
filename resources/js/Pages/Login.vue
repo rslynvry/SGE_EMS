@@ -22,15 +22,16 @@
 <script>
     import axios from 'axios';
     import Body from '../Shared/Body.vue';
+    import { useForm } from '@inertiajs/vue3';
 
     export default {
         components: { Body },
         data() {
             return {
-                form: {
+                form: useForm({
                     StudentNumber: '',
                     Password: ''
-                },
+                }),
                 loggingIn: false,
                 invalid: '',
                 login_text: 'Login',
@@ -71,36 +72,9 @@
                         if (response.data.message === true) {
                             const user_role = response.data.user_role;
 
-                            axios.post(`/login/auth/${user_role}`, this.form)
-                                .then(response => {
-                                    if (response.data.redirect) {
-                                        window.location.href = response.data.redirect;
-                                    }
-                                    else if (response.data.invalid) {
-                                        this.invalid = response.data.invalid;
-
-                                        this.loggingIn = false;
-                                        this.login_text = 'Login';
-                                    }
-                                })
-                                .catch(error => {
-                                    // Too many requests, via throttle middleware of Laravel
-                                    if (error.response) {
-                                        if (error.response.status === 429) { 
-                                            const retryAfter = error.response.headers['retry-after'];
-                                            this.startCountdown(retryAfter);
-                                        }
-                                        else if (error.response.status === 419) {
-                                            this.invalid = 'Please refresh your page and try again.';
-                                        }
-                                        else {
-                                            // handle other errors
-                                        }
-                                    }
-
-                                    this.loggingIn = false;
-                                    this.login_text = 'Login';
-                                });
+                            this.form.post('/login/auth/comelec', {
+                                onFinish: () => window.location.href = '/comelec/elections'
+                            });
                         }
                         else {
                             this.invalid = 'Invalid credentials.';

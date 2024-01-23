@@ -19,7 +19,7 @@ class PublicRoutes
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $token = $request->cookie('jwt_token');
+        $token = $request->session()->get('student_number');
 
         if ($token && $request->path() != 'comelec/elections' && $request->path() != 'organization/elections') {
             return redirect('comelec/elections');
