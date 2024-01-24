@@ -18,7 +18,7 @@ class ComelecController extends Controller
     public function elections(Request $request) 
     {
         $student_number = $request->session()->get('student_number');
-        $comelec = Comelec::where('StudentNumber', $student_number)
+        $comelec = Comelec::where('StudentId', $request->session()->get('student_id'))
             ->first();
 
         $student = Student::where('StudentId', $request->session()->get('student_id'))
