@@ -7,7 +7,7 @@
             <h2>Login</h2>
 
                 <label for="student_number">Student Number</label>
-                <input type="text" id="student_number" placeholder="Enter your student number" maxlength="15" @keyup.enter="submitForm" v-model="form.StudentNumber">
+                <input type="text" id="student_number" placeholder="Enter your student number" maxlength="15" @keyup.enter="submitForm" v-model="form.student_number">
 
                 <label for="password">Password</label>
                 <input type="password" id="password" placeholder="Enter your password" @keyup.enter="submitForm" v-model="form.Password">
@@ -52,7 +52,7 @@
                 if (this.loggingIn) {
                     return;
                 }
-                if (this.form.StudentNumber === '') {
+                if (this.form.student_number === '') {
                     this.invalid = 'Please enter your student number.';
                     return;
                 }
