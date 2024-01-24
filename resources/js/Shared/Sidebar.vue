@@ -117,10 +117,6 @@ export default {
 </template>
 
 <style scoped>
-body{
-    background-color: #EDF2F4;
-}
-
 .sidebar-header-title{
     font-family: 'Inter', sans-serif;
     font-weight: 800;
