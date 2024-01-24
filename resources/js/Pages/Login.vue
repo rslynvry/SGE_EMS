@@ -7,7 +7,7 @@
             <h2>Login</h2>
 
                 <label for="student_number">Student Number</label>
-                <input type="text" id="student_number" placeholder="Enter your student number" maxlength="15" @keyup.enter="submitForm" v-model="form.student_number">
+                <input type="text" id="student_number" placeholder="Enter your student number" maxlength="15" @keyup.enter="submitForm" v-model="form.StudentNumber">
 
                 <label for="password">Password</label>
                 <input type="password" id="password" placeholder="Enter your password" @keyup.enter="submitForm" v-model="form.Password">
@@ -22,17 +22,15 @@
 <script>
     import axios from 'axios';
     import Body from '../Shared/Body.vue';
-    import { useForm } from '@inertiajs/vue3';
 
     export default {
         components: { Body },
         data() {
             return {
-                form: useForm({
-                    student_number: '',
-                    student_id: 0,
+                form: {
+                    StudentNumber: '',
                     Password: ''
-                }),
+                },
                 loggingIn: false,
                 invalid: '',
                 login_text: 'Login',
@@ -53,7 +51,7 @@
                 if (this.loggingIn) {
                     return;
                 }
-                if (this.form.student_number === '') {
+                if (this.form.StudentNumber === '') {
                     this.invalid = 'Please enter your student number.';
                     return;
                 }
@@ -66,17 +64,43 @@
                 this.login_text = 'Logging in...';
 
                     axios.post(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/student/election-management/login`, {
-                        StudentNumber: this.form.student_number,
+                        StudentNumber: this.form.StudentNumber,
                         Password: this.form.Password
                     })
                     .then(response => {
                         if (response.data.message === true) {
                             const user_role = response.data.user_role;
-                            this.student_id = response.data.student_id;
 
-                            this.form.post('/login/auth/comelec', {
-                                onFinish: () => window.location.href = '/comelec/elections'
-                            });
+                            axios.post(`/login/auth/${user_role}`, this.form)
+                                .then(response => {
+                                    if (response.data.redirect) {
+                                        window.location.href = response.data.redirect;
+                                    }
+                                    else if (response.data.invalid) {
+                                        this.invalid = response.data.invalid;
+
+                                        this.loggingIn = false;
+                                        this.login_text = 'Login';
+                                    }
+                                })
+                                .catch(error => {
+                                    // Too many requests, via throttle middleware of Laravel
+                                    if (error.response) {
+                                        if (error.response.status === 429) { 
+                                            const retryAfter = error.response.headers['retry-after'];
+                                            this.startCountdown(retryAfter);
+                                        }
+                                        else if (error.response.status === 419) {
+                                            this.invalid = 'Please refresh your page and try again.';
+                                        }
+                                        else {
+                                            // handle other errors
+                                        }
+                                    }
+
+                                    this.loggingIn = false;
+                                    this.login_text = 'Login';
+                                });
                         }
                         else {
                             this.invalid = 'Invalid credentials.';

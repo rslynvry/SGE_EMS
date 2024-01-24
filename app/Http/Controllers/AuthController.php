@@ -31,22 +31,10 @@ class AuthController extends Controller
         $token = 'Authorized';
         $redirect = '/comelec/elections';
 
-        $request->session()->put('student_number', $request->student_number);
-        $request->session()->put('student_id', $request->student_id);
-        $request->session()->put('user_role', 'comelec');
+        $user_info_cookie = cookie('user_info', $cookie_data, $cookie_minutes_lifetime, null, null, true, true, false, null);
+        $cookie = cookie('jwt_token', $token, $cookie_minutes_lifetime, null, null, true, true, false, null);
 
-        // Put student number in a session
-        //$request->session()->put('student_number', $request->StudentNumber);
-
-        $user_info_cookie = cookie('user_info', $cookie_data, $cookie_minutes_lifetime);
-        $cookie = cookie('jwt_token', $token, $cookie_minutes_lifetime);
-        //$user_info_cookie = cookie('user_info', $cookie_data, $cookie_minutes_lifetime);
-        //$cookie = cookie('jwt_token', $token, $cookie_minutes_lifetime);
-
-        //return response()->json(['redirect' => $redirect])->withCookie($cookie)->withCookie($user_info_cookie);
-        //return response()->json(['redirect' => $redirect])->withCookie($cookie)->withCookie($user_info_cookie);
-
-        return response()->json(['redirect' => $redirect]);
+        return response()->json(['redirect' => $redirect])->withCookie($cookie)->withCookie($user_info_cookie);
     } 
 
     public function authOfficerLogin(Request $request)

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use App\Models\Student;
 use App\Models\Comelec;
 use App\Models\Election;
 use App\Models\CoC;
@@ -17,12 +16,13 @@ class ComelecController extends Controller
     // Landing page for Comelec after logging in
     public function elections(Request $request) 
     {
-        $student_number = $request->session()->get('student_number');
-        $comelec = Comelec::where('StudentId', $request->session()->get('student_id'))
+        $get_user_info = json_decode($request->cookie('user_info'), true);
+
+        $comelec = Comelec::where('StudentNumber', $get_user_info['student_number'])
+            ->with('getStudentByStudentNumber')
             ->first();
 
-        $student = Student::where('StudentId', $request->session()->get('student_id'))
-            ->first();
+        $student = $comelec->getStudentByStudentNumber;
 
         // Comelec columns
         $comelec_id = $comelec->ComelecId;

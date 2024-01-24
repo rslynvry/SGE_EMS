@@ -61,6 +61,7 @@ Route::group(['middleware' => 'revalidate'], function () {
     ->name('post.logout');
 });
 
+Route::group(['middleware' => 'check.auth.comelec'], function () {
 // Routes that are protected by JWT token and must be authenticated as comelec user
     Route::get('/comelec/elections', [ComelecController::class, 'elections'])
         ->name('comelec.elections');
@@ -112,6 +113,7 @@ Route::group(['middleware' => 'revalidate'], function () {
 
     Route::get('/comelec/appointments', [ComelecController::class, 'appointments'])
         ->name('comelec.appointments');
+});
 
 // Routes that are protected by JWT token and must be authenticated as organization user
 Route::group(['middleware' => 'check.auth.organization'], function () {
