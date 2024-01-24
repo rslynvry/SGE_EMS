@@ -65,7 +65,7 @@
                 this.login_text = 'Logging in...';
 
                     axios.post(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/student/election-management/login`, {
-                        StudentNumber: this.form.StudentNumber,
+                        StudentNumber: this.form.student_number,
                         Password: this.form.Password
                     })
                     .then(response => {
