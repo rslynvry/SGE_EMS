@@ -53,20 +53,22 @@ class AuthController extends Controller
         // Put student number in a session
         //$request->session()->put('student_number', $request->StudentNumber);
                
-        $user_info_cookie = cookie('user_info', $cookie_data, $cookie_minutes_lifetime, null, null, true, true, false, 'strict');
-        $cookie = cookie('jwt_token', $token, $cookie_minutes_lifetime, null, null, true, true, false, 'strict');
+        $user_info_cookie = cookie('user_info', $cookie_data, $cookie_minutes_lifetime);
+        $cookie = cookie('jwt_token', $token, $cookie_minutes_lifetime);
 
         return response()->json(['redirect' => $redirect])->withCookie($cookie)->withCookie($user_info_cookie);
     } 
 
     public function logout(Request $request) {
         try { 
-            $request->session()->forget('student_number');
-            $request->session()->forget('user_role');
+            // Instruct client side to delete the cookies with withCookie() and redirect to login page
+            $cookie = cookie()->forget('jwt_token');
+            $user_info_cookie = cookie()->forget('user_info');
+            $logout_cookie = cookie('logout_pass', 'true', 1);
 
             return response()->json([
                 'logout' => 'true',
-            ]);
+            ])->withCookie($user_info_cookie)->withCookie($cookie)->withCookie($logout_cookie);
             
         }
         catch(Exception $e) {
