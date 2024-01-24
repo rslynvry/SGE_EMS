@@ -6,7 +6,11 @@
 </script>
 
 <style>
+    html{
+        background-color: #e6e9ed;
+    }
+
     body{
-        background-color: #EDF2F4;
+        background-color: transparent !important;
     }
 </style>
