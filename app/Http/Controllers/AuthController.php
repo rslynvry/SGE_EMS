@@ -32,6 +32,7 @@ class AuthController extends Controller
         $redirect = '/comelec/elections';
 
         $request->session()->put('student_number', $request->student_number);
+        $request->session()->put('student_id', $request->student_id);
         $request->session()->put('user_role', 'comelec');
 
         // Put student number in a session

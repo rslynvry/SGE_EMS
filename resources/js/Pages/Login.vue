@@ -30,6 +30,7 @@
             return {
                 form: useForm({
                     student_number: '',
+                    student_id: 0,
                     Password: ''
                 }),
                 loggingIn: false,
@@ -71,6 +72,7 @@
                     .then(response => {
                         if (response.data.message === true) {
                             const user_role = response.data.user_role;
+                            this.student_id = response.data.student_id;
 
                             this.form.post('/login/auth/comelec', {
                                 onFinish: () => window.location.href = '/comelec/elections'
