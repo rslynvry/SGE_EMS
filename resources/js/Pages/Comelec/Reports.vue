@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-4" style="display: flex; align-items: center;">
                             <select class="form-select" aria-label="Default select example" v-model="select_election_input" @change="electionInputChanged">
-                                <option value="" disabled hidden selected>No Election Available</option>
+                                <option value="" disabled hidden selected>Select Election</option>
                                 <option v-if="!isElectionsDataLoading" v-for="(election, index) in electionsData" :key="index" :value="election.ElectionId">
                                     {{ election.ElectionName }}
                                 </option>
@@ -168,11 +168,12 @@
                                             <span class="candidate-name">{{ selected_candidate_name }}</span>
                                         </div>
                                         <span class="etc">{{ selected_candidate_partylist }}</span>
-                                        <span class="etc">BSIT 3-1</span>
-                                        <span class="motto">“{{ selected_candidate_motto }}”</span>
+                                        <span class="etc"></span>
+                                        <span class="motto" v-if="selected_candidate_motto">“{{ selected_candidate_motto }}”</span>
+                                        <span class="motto" v-else></span>
                                         <span class="platform-label">PLATFORM:</span>
                                         <p class="platform">
-                                            Platform
+                                            
                                         </p>
                                     </div>
                                 </div>

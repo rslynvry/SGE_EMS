@@ -192,8 +192,10 @@ export default {
     background-color: white;
 }
 
-.list-group-item:hover{
-    background-color: white;
+.list-group-item:hover,
+.list-group-item:active,
+.list-group-item:focus{
+background-color: white;
     margin-left: 15px;
     color: #B90321;
 }
