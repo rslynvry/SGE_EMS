@@ -1354,7 +1354,6 @@
     }
 
     .quantity-label{
-        font-weight: 100;
         font-size: 16px;
     }
     

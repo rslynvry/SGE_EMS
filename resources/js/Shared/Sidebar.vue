@@ -202,6 +202,7 @@ background-color: white;
 
 .active{
     color: #B90321;
+    background-color: transparent !important;
 }
 
 .sub{

@@ -89,7 +89,7 @@
     .user:active,
     .user:focus
     .user:default{
-        color: black;
+        color: black !important;
     }
 
     .navbar-active{
