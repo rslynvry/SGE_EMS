@@ -42,7 +42,7 @@ class AuthController extends Controller
         //$user_info_cookie = cookie('user_info', $cookie_data, $cookie_minutes_lifetime);
         //$cookie = cookie('jwt_token', $token, $cookie_minutes_lifetime);
 
-        return response()->json(['redirect' => $redirect])->withCookie($cookie)->withCookie($user_info_cookie);
+        //return response()->json(['redirect' => $redirect])->withCookie($cookie)->withCookie($user_info_cookie);
         //return response()->json(['redirect' => $redirect])->withCookie($cookie)->withCookie($user_info_cookie);
 
         return response()->json(['redirect' => $redirect]);

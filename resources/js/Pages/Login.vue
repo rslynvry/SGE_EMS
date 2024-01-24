@@ -29,7 +29,7 @@
         data() {
             return {
                 form: useForm({
-                    StudentNumber: '',
+                    student_number: '',
                     Password: ''
                 }),
                 loggingIn: false,
