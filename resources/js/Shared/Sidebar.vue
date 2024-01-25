@@ -55,12 +55,12 @@ export default {
             </Link>
 
             <template v-if="user_role === 'comelec'">
-                <Link href="/comelec/voters-registration" 
+                <!-- <Link href="/comelec/voters-registration" 
                     :class="{ 'active': $inertia.page.url.startsWith('/comelec/voters-registration') }" 
                     class="main list-group-item py-2">
                     <img class="side-icon" src="../../images/icons/insert_data.svg" alt="Icon" height="35" width="35">
                     <span>Voters Registration</span>
-                </Link>
+                </Link> -->
 
                 <Link href="/comelec/approvals" 
                     :class="{ 'active': $inertia.page.url.startsWith('/comelec/approvals') }" 
@@ -104,12 +104,12 @@ export default {
                     <span>Reports</span>
                 </Link>
                 
-                <Link href="/comelec/appointments" 
+                <!-- <Link href="/comelec/appointments" 
                     :class="{ 'active': $inertia.page.url.startsWith('/comelec/appointments') }"  
                     class="main list-group-item py-2">
                     <img class="side-icon" src="../../images/icons/appointments.svg" alt="?" height="35" width="35">
                     <span>Appointments</span>
-                </Link>
+                </Link> -->
             </template>
             </div>
         </div>
@@ -195,14 +195,13 @@ export default {
 .list-group-item:hover,
 .list-group-item:active,
 .list-group-item:focus{
-background-color: white;
     margin-left: 15px;
     color: #B90321;
 }
 
 .active{
-    color: #B90321;
     background-color: transparent !important;
+    color: #B90321 !important;
 }
 
 .sub{

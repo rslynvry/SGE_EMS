@@ -160,20 +160,20 @@
 
                     <div class="row">
                         <div class="col-12" style="display: flex; align-items: center;">
-                            <div class="candidate-wrapper">
-                                <div class="candidate-information">
+                            <div class="candidate-wrapper" style="width: 100%;">
+                                <div class="candidate-information" style="width: 100%;">
                                     <img :src="selected_candidate_image" alt="" class="candidate-img">
                                     <div class="candidate-description">
                                         <div class="spacing">
                                             <span class="candidate-name">{{ selected_candidate_name }}</span>
                                         </div>
                                         <span class="etc">{{ selected_candidate_partylist }}</span>
-                                        <span class="etc"></span>
+                                        <span class="etc">{{ selected_candidate_course_year_section }}</span>
                                         <span class="motto" v-if="selected_candidate_motto">“{{ selected_candidate_motto }}”</span>
                                         <span class="motto" v-else></span>
                                         <span class="platform-label">PLATFORM:</span>
                                         <p class="platform">
-                                            
+                                            {{ selected_candidate_platform }}
                                         </p>
                                     </div>
                                 </div>
@@ -308,43 +308,43 @@
             const data_voter_course = [
                 { 
                     value: 0, 
-                    label: 'BBTLEDHE', 
+                    label: 'BBTE', 
                     color: '#C9FFC5', // Green
                     borderColor: '#70AD47'
                 },
                 { 
                     value: 0, 
-                    label: 'BSBAHRM', 
+                    label: 'BBA', 
                     color: 'rgba(255, 99, 132, 0.4)', // Red
                     borderColor: 'rgba(255, 99, 132, 1)' 
                 },
                 {
                     value: 0,
-                    label: 'BSBA-MM',
+                    label: 'BPAM',
                     color: 'rgba(255, 159, 64, 0.4)', // Orange
                     borderColor: 'rgba(255, 159, 64, 1)'
                 },
                 {
                     value: 0,
-                    label: 'BSENTREP',
+                    label: 'BSBA-MM',
                     color: 'rgba(75, 192, 192, 0.4)', // Teal
                     borderColor: 'rgba(75, 192, 192, 1)'
                 },
                 {
                     value: 0,
-                    label: 'BSIT',
+                    label: 'BTLE-HE',
                     color: 'rgba(54, 162, 235, 0.4)', // Blue
                     borderColor: 'rgba(54, 162, 235, 1)'
                 },
                 {
                     value: 0,
-                    label: 'BPAPFM',
+                    label: 'BSIT',
                     color: 'rgba(255, 235, 79, 0.4)', // Yellow
                     borderColor: 'rgba(255, 235, 59, 1)' 
                 },
                 {
                     value: 0,
-                    label: 'DOMTMOM',
+                    label: 'BSENT',
                     color: 'rgba(153, 102, 255, 0.4)', // Purple
                     borderColor: 'rgba(153, 102, 255, 1)'
                 }
@@ -401,44 +401,44 @@
             const instance_candidate_votes_by_course = null;
             const data_candidate_votes_by_course = [
                 { 
-                    value: 22, 
-                    label: 'BBTLEDHE', 
+                    value: 0, 
+                    label: 'BBTE', 
                     color: '#C9FFC5', // Green
                     borderColor: '#70AD47'
                 },
                 { 
-                    value: 19, 
-                    label: 'BSBAHRM', 
+                    value: 0, 
+                    label: 'BBA', 
                     color: 'rgba(255, 99, 132, 0.4)', // Red
                     borderColor: 'rgba(255, 99, 132, 1)' 
                 },
                 {
-                    value: 19,
-                    label: 'BSBA-MM',
+                    value: 0,
+                    label: 'BPAM',
                     color: 'rgba(255, 159, 64, 0.4)', // Orange
                     borderColor: 'rgba(255, 159, 64, 1)'
                 },
                 {
-                    value: 19,
-                    label: 'BSENTREP',
+                    value: 0,
+                    label: 'BSBA-MM',
                     color: 'rgba(75, 192, 192, 0.4)', // Teal
                     borderColor: 'rgba(75, 192, 192, 1)'
                 },
                 {
-                    value: 19,
-                    label: 'BSIT',
+                    value: 0,
+                    label: 'BTLE-HE',
                     color: 'rgba(54, 162, 235, 0.4)', // Blue
                     borderColor: 'rgba(54, 162, 235, 1)'
                 },
                 {
-                    value: 19,
-                    label: 'BPAPFM',
+                    value: 0,
+                    label: 'BSIT',
                     color: 'rgba(255, 235, 79, 0.4)', // Yellow
                     borderColor: 'rgba(255, 235, 59, 1)' 
                 },
                 {
-                    value: 19,
-                    label: 'DOMTMOM',
+                    value: 0,
+                    label: 'BSENT',
                     color: 'rgba(153, 102, 255, 0.4)', // Purple
                     borderColor: 'rgba(153, 102, 255, 1)'
                 }
@@ -622,7 +622,7 @@
                     labels: this.data_voter_course.map(item => item.label),
                     datasets: [{
                         label: '',
-                        data: this.data_voter_course.map(item => item.value),
+                        data: [],
                         backgroundColor: this.data_voter_course.map(item => item.color),
                         borderColor: this.data_voter_course.map(item => item.borderColor),
                         borderWidth: 1,
@@ -972,7 +972,7 @@
                     labels: this.data_candidate_ratings.map(item => item.label),
                     datasets: [{
                         label: '',
-                        //data: [5, 7, 3, 10, 5, 12, 8],
+                        //data: [5, 7, 3, 10, 5,],
                         data: [],
                         borderColor: '#03ABFF',
                         pointBackgroundColor: '#0088CC',
@@ -1130,21 +1130,17 @@
 
                     // update voter course distribution chart
 
-                    /*election.CourseDistribution.forEach(course => {
-                        const courseName = Object.keys(course)[0];
-                        const courseValue = course[courseName];
+                    for (let item of this.data_voter_course) {
+                        let course = item.label;
 
-                        // Find the corresponding object in the data_voter_course array
-                        const courseObject = this.data_voter_course.find(item => item.label === courseName);
-
-                        // If the course object exists, update its value
-                        if (courseObject) {
-                            courseObject.value = courseValue;
+                        // Update the value field with the vote count from the API response
+                        if (course in election.CourseDistribution) {
+                            item.value = election.CourseDistribution[course];
                         }
-                    });
+                    }           
 
                     this.instance_voter_course.data.datasets[0].data = this.data_voter_course.map(item => item.value);
-                    this.instance_voter_course.update();*/
+                    this.instance_voter_course.update();
 
                     // update coc chart
 
@@ -1194,8 +1190,10 @@
 
                     this.selected_candidate_name = candidate.FullName;
                     this.selected_candidate_image = candidate.DisplayPhoto;
-                    this.selected_candidate_partylist = candidate.Partylist;
+                    this.selected_candidate_partylist = candidate.PartyListName;
+                    this.selected_candidate_course_year_section = candidate.CourseYearSection;
                     this.selected_candidate_motto = candidate.Motto;
+                    this.selected_candidate_platform = candidate.Platform
 
                     this.data_candidate_votes = [
                         { 
@@ -1214,6 +1212,56 @@
 
                     this.instance_candidate_votes.data.datasets[0].data = this.data_candidate_votes.map(item => item.value);
                     this.instance_candidate_votes.update();
+                    
+                    // Loop over each item in data_candidate_votes_by_course
+                    for (let item of this.data_candidate_votes_by_course) {
+                        let course = item.label;
+
+                        // Update the value field with the vote count from the API response
+                        if (course in candidate.VotesPerCourse) {
+                            item.value = candidate.VotesPerCourse[course];
+                        }
+                    }           
+                    
+                    this.instance_candidate_votes_by_course.data.datasets[0].data = this.data_candidate_votes_by_course.map(item => item.value);
+                    this.instance_candidate_votes_by_course.update();
+
+                    const data_candidate_ratings = [
+                        { 
+                            value: candidate.OneStar,
+                            label: '1 Star', 
+                            color: 'yellow', // Green
+                            borderColor: '#70AD47'
+                        },
+                        { 
+                            value: candidate.TwoStar,
+                            label: '2 Stars', 
+                            color: 'yellow', // Red
+                            borderColor: 'rgba(255, 99, 132, 1)' 
+                        },
+                        {
+                            value: candidate.ThreeStar,
+                            label: '3 Stars',
+                            color: 'yellow', // Orange
+                            borderColor: 'rgba(255, 159, 64, 1)'
+                        },
+                        {
+                            value: candidate.FourStar,
+                            label: '4 Stars',
+                            color: 'yellow', // Teal
+                            borderColor: 'rgba(75, 192, 192, 1)'
+                        },
+                        {
+                            value: candidate.FiveStar,
+                            label: '5 Stars',
+                            color: 'yellow', // Blue
+                            borderColor: 'rgba(54, 162, 235, 1)'
+                        },
+                    ];
+
+                    this.instance_candidate_ratings.data.datasets[0].data = data_candidate_ratings.map(item => item.value);
+                    this.instance_candidate_ratings.update();
+                        
                 })
             },
         }
@@ -1248,7 +1296,6 @@
     }
 
     .election-data{
-        font-weight: 200;
         font-size: 16px;
         font-family: 'Inter', sans-serif;
     }
