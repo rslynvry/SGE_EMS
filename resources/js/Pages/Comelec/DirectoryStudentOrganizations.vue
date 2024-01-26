@@ -57,10 +57,10 @@
                         <label class="form-label" for="adviser">Adviser Name</label>
                         <input :disabled="creating" class="form-control margin1" type="text" name="adviser" v-model="organization_adviser_name">
                         
-                        <label class="form-label" for="vision">Vision <span style="font-family: Arial; font-size: 14px;">(Optional)</span></label>
+                        <label class="form-label" for="vision">Vision <span style="font-family: Arial; font-size: 14px;"></span></label>
                         <input :disabled="creating" class="form-control margin1" type="text" name="vision" v-model="organization_vision">
                         
-                        <label class="form-label" for="mission">Mission <span style="font-family: Arial; font-size: 14px;">(Optional)</span></label>
+                        <label class="form-label" for="mission">Mission <span style="font-family: Arial; font-size: 14px;"></span></label>
                         <input :disabled="creating" class="form-control padding1" type="text" name="mission" v-model="organization_mission">
                     </div>
                 </div>     
@@ -470,6 +470,16 @@
                 }
                 if (this.organization_adviser_name === '') {
                     alert('Please input adviser name.');
+                    return false;
+                }
+
+                if (this.organization_vision === '') {
+                    alert('Please input organization vision.');
+                    return false;
+                }
+
+                if (this.organization_mission === '') {
+                    alert('Please input organization mission.');
                     return false;
                 }
 

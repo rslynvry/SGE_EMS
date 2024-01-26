@@ -1,18 +1,48 @@
 <template>
-    <div class="container">
-        <div class="card">
-            <div class="alert alert-danger" role="alert" v-if="invalid">
-                {{ invalid }}
+    <div class="bg-img">
+        <div class="login container frost">
+            
+            <!--Change to Election Management when in EMS-->
+            <div class="header" style="display: flex; flex-direction: column;">
+                <div class="logo">
+                    <img src="../../images/PUPLogo.png" width="88px" height="88px" alt="logo">
+                </div>
+                <div class="div" style="display: flex; align-items: center;">
+                    <h1 class="my-3">Election Management</h1>
+                    <span class="beta">βeta</span>
+                </div>
             </div>
-            <h2>Login</h2>
 
-                <label for="student_number">Student Number</label>
-                <input type="text" id="student_number" placeholder="Enter your student number" maxlength="15" @keyup.enter="submitForm" v-model="form.StudentNumber">
+            <div style="text-align: center; justify-content: center; display: flex; margin: 0%;">
+                <div class="alert alert-danger" role="alert" style="text-align: center; margin-top: 3%; width: 50%;" v-if="invalid">
+                    {{ invalid }}
+                </div>
+            </div>
 
-                <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Enter your password" @keyup.enter="submitForm" v-model="form.Password">
 
-                <button class="login-button" @click.prevent="submitForm" :disabled="loggingIn">{{ login_text }}</button>
+            <div class="input mb-4 mx-4">
+                <div class="form-group">
+                    <label class="form-label" for="student-number">Student Number</label>
+                    <input class="form-control" type="text" id="student-number" placeholder="Enter your student number" name="student-number" maxlength="15" @keyup.enter="submitForm" v-model="form.StudentNumber">
+                    <div class="invalid-feedback">
+                        Please enter your student number.
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input class="form-control" type="password" id="password" name="password" placeholder="Enter your password" @keyup.enter="submitForm" v-model="form.Password">
+                    <div class="invalid-feedback">
+                        Please enter your password.
+                    </div>
+                </div>
+
+                <div class="submit">
+                    <button class="signin" @click="submitForm">{{ login_text }}</button>
+                </div>
+            </div>
+            
+            <p class="terms mx-4">By using this service, you understood and agree to the PUP Online Services <a href="https://www.pup.edu.ph/terms/" class="redirect">Terms of Use</a> and <a href="https://www.pup.edu.ph/privacy/" class="redirect">Privacy Statement</a></p>
         </div>
     </div>
 
@@ -33,7 +63,7 @@
                 },
                 loggingIn: false,
                 invalid: '',
-                login_text: 'Login',
+                login_text: 'Sign in',
                 countdown: 0,
                 intervalId: null,
             }
@@ -61,7 +91,7 @@
                 }
 
                 this.loggingIn = true;
-                this.login_text = 'Logging in...';
+                this.login_text = 'Signing in...';
 
                     axios.post(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/student/election-management/login`, {
                         StudentNumber: this.form.StudentNumber,
@@ -80,7 +110,7 @@
                                         this.invalid = response.data.invalid;
 
                                         this.loggingIn = false;
-                                        this.login_text = 'Login';
+                                        this.login_text = 'Sign in';
                                     }
                                 })
                                 .catch(error => {
@@ -99,13 +129,13 @@
                                     }
 
                                     this.loggingIn = false;
-                                    this.login_text = 'Login';
+                                    this.login_text = 'Sign in';
                                 });
                         }
                         else {
                             this.invalid = 'Invalid credentials.';
                             this.loggingIn = false;
-                            this.login_text = 'Login';
+                            this.login_text = 'Sign in';
                         }
                     })
                     .catch(error => {
@@ -126,7 +156,7 @@
                         }
 
                         this.loggingIn = false;
-                        this.login_text = 'Login';
+                        this.login_text = 'Sign in';
                     });
             },
             startCountdown(seconds) {
@@ -147,69 +177,108 @@
 </script>
 
 <style scoped>
-    .container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+    .bg-img{
+    width: 100%;
+    background-image: url('../../images/pupqc.jpg'); 
+    background-size: cover; 
+    background-repeat: no-repeat;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+}
+
+    .login{
+        background-color: #F2F2F2;
+        width: 33%;
+        min-height: 100vh;
+        padding-top: 5.5%;
+        float: right;
     }
 
-    .card {
-        width: 300px;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    .logo{
         text-align: center;
     }
 
-    h2 {
-        color: #0e0e0e;
-        margin-bottom: 20px;
-    }
-
-    .login-form {
+    .header{
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
-    label {
-        text-align: left;
-        margin-bottom: 5px;
+    .login h1{   
+        text-align: center;
+        font-size: 32px;
+        font-weight: bold;
     }
 
-    input {
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
+    .cast{
+        text-align: center;
     }
 
-    .login-button {
-        padding: 10px;
-        background-color: #B90321;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .login-button:hover{
-        background-color: #a0031d;
-    }
-
-    .login-button:disabled {
-        background-color: #ccc;
-        cursor: default;
-    }
-
-    .switch {
-        margin-top: 15px;
+    .beta{
+        margin-left: 10px;
         font-size: 14px;
+        font-weight: 300;
     }
-    
-    .switch a {
-        color: #007bff;
-        text-decoration:none
+
+    .input{
+        margin-top: 2%;
+    }
+
+    .form-group{
+        margin-bottom: 10px;
+    }
+
+    .form-control:focus {
+        border-color: #800000; /* Change this to your desired color */
+        box-shadow: 0 0 0 0.2rem rgba(114, 18, 18, 0.25); /* Change this to match your desired color */
+    }
+
+    .submit{
+        text-align: center;
+        margin-top: 5%;
+    }
+
+    .submit button{
+        width: 100%;
+        height: 40px;
+        border-radius: 3px;
+        border: transparent;
+        background-color: rgba(117, 0, 0, 0.926);
+        color: white;
+    }
+
+    .submit button:hover{
+        background-color: rgba(117, 0, 0, 0.979);
+    }
+
+    .terms{
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .redirect{
+        text-decoration: none;
+        color: #750000;
+    }
+
+    .redirect:hover{
+        color: #800000;
+    }
+
+    .frost{
+        min-height: 100vh;
+        min-width: 360px !important;
+        padding: 10vh 0 0 0;
+        overflow: hidden;
+        box-shadow: none !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        background: rgba(255,255,255,0.7);
+        -webkit-backdrop-filter: blur(20px) saturate(168%);
+        backdrop-filter: blur(20px) saturate(168%);
+        right: 0;
+        position: absolute;
     }
 </style>
