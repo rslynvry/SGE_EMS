@@ -569,7 +569,7 @@
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Voters Population',
+                            text: 'Election Turnout',
                             font: {
                                 size: 15,
                                 family: 'Inter',
