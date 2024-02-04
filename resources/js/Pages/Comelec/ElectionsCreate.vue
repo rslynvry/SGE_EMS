@@ -98,10 +98,10 @@
                     <label for="filing-period" class="col-3 col-form-label">Campaign Period</label>
                     <div class="col-5">
                         <label class="form-label" for="c-start">Campaign Start</label>
-                        <input type="datetime-local" class="form-control margin" v-model="election_campaign_start_input">
+                        <input type="datetime-local" class="form-control margin" v-model="election_campaign_start_input" :min="election_filing_coc_end_input">
 
                         <label class="form-label" for="c-end">Campaign End</label>
-                        <input type="datetime-local" class="form-control margin" v-model="election_campaign_end_input">
+                        <input type="datetime-local" class="form-control margin" v-model="election_campaign_end_input" :min="election_campaign_start_input">
                     </div>
                 </div>
 
@@ -111,10 +111,10 @@
                     <label for="filing-period" class="col-3 col-form-label">Voting Period</label>
                     <div class="col-5">
                         <label class="form-label" for="v-start">Voting Start</label>
-                        <input type="datetime-local" class="form-control margin" v-model="election_voting_start_input">
+                        <input type="datetime-local" class="form-control margin" v-model="election_voting_start_input" :min="election_campaign_end_input">
 
                         <label class="form-label" for="v-end">Voting End</label>
-                        <input type="datetime-local" class="form-control margin" v-model="election_voting_end_input">
+                        <input type="datetime-local" class="form-control margin" v-model="election_voting_end_input" :min="election_voting_start_input">
                     </div>
                 </div>
 
@@ -124,10 +124,10 @@
                     <label for="filing-period" class="col-3 col-form-label">Appeal Period</label>
                     <div class="col-5">
                         <label class="form-label" for="a-start">Appeal Start</label>
-                        <input type="datetime-local" class="form-control margin" v-model="election_appeal_start_input">
+                        <input type="datetime-local" class="form-control margin" v-model="election_appeal_start_input" :min="election_voting_end_input">
 
                         <label class="form-label" for="a-end">Appeal End</label>
-                        <input type="datetime-local" class="form-control" v-model="election_appeal_end_input">
+                        <input type="datetime-local" class="form-control" v-model="election_appeal_end_input" :min="election_appeal_start_input">
                     </div>
                 </div>
             </div>
@@ -610,6 +610,32 @@
                 }
                 if (this.election_appeal_end_input === '') {
                     return alert('Appeal end cannot be empty');
+                }
+
+                // Check if datetimes are progressive
+                if (new Date(this.election_start_input) > new Date(this.election_end_input)) {
+                    return alert('Election start cannot be greater than election end');
+                }
+                if (new Date(this.election_filing_coc_start_input) > new Date(this.election_filing_coc_end_input)) {
+                    return alert('Filing start cannot be greater than filing end');
+                }
+                if (new Date(this.election_filing_coc_end_input) > new Date(this.election_campaign_start_input)) {
+                    return alert('Campaign start should be after filing end');
+                }
+                if (new Date(this.election_campaign_start_input) > new Date(this.election_campaign_end_input)) {
+                    return alert('Campaign start cannot be greater than campaign end');
+                }
+                if (new Date(this.election_campaign_end_input) > new Date(this.election_voting_start_input)) {
+                    return alert('Voting start should be after campaign end');
+                }
+                if (new Date(this.election_voting_start_input) > new Date(this.election_voting_end_input)) {
+                    return alert('Voting start cannot be greater than voting end');
+                }
+                if (new Date(this.election_voting_end_input) > new Date(this.election_appeal_start_input)) {
+                    return alert('Appeal start should be after voting end');
+                }
+                if (new Date(this.election_appeal_start_input) > new Date(this.election_appeal_end_input)) {
+                    return alert('Appeal start cannot be greater than appeal end');
                 }
 
                 // Create a set to store unique values
