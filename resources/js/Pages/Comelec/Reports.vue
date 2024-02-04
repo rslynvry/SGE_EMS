@@ -143,7 +143,7 @@
             <h1 class="page-title" style="margin-top: 2%;">Selected Election Candidates</h1>
         </div>
 
-        <div class="row" style="margin-top: 15px; margin-left: -23px;">
+        <div class="row" style="margin-top: 15px; margin-left: -23px;" v-show="candidates_list.length > 0">
             <div class="col-6" style="padding-right: 1.15%;">
                 <BaseContainer :height="'485px'" :maxHeight="'600px'">
                     <div class="row">
@@ -193,7 +193,7 @@
             </div>
         </div>
 
-        <div class="row" style="margin-top: 15px; margin-left: -23px;">
+        <div class="row" style="margin-top: 15px; margin-left: -23px;" v-show="candidates_list.length > 0">
             <div class="col-6" style="padding-right: 1.15%;">
                 <BaseContainer :height="'auto'" :maxHeight="'600px'">
                     <div class="col-12">
@@ -213,6 +213,10 @@
                 </BaseContainer>
             </div>
         </div>
+
+        <template v-if="candidates_list.length <= 0">
+            <h4 class="my-4">No candidates under this election.</h4>
+        </template>
 
     </div>
 
@@ -281,8 +285,10 @@
             watch(isElectionsDataSuccess, (newValue, oldValue) => {
                 if (newValue) {
                     console.log(electionsData.value[0]);
-                    select_election_input.value = electionsData.value[0].ElectionId;
-                    initial_election_selected.value = true;
+
+                    // Select the first election by default
+                    //select_election_input.value = electionsData.value[0].ElectionId;
+                    //initial_election_selected.value = true;
                 }
             })
 

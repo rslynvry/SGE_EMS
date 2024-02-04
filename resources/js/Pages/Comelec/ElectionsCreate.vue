@@ -75,7 +75,7 @@
                         <input type="datetime-local" class="form-control margin" v-model="election_start_input">
 
                         <label class="form-label" for="e-end">Election End</label>
-                        <input type="datetime-local" class="form-control margin" v-model="election_end_input">
+                        <input type="datetime-local" class="form-control margin" v-model="election_end_input" :min="election_start_input">
                     </div>
                 </div>
 
@@ -88,7 +88,7 @@
                         <input type="datetime-local" class="form-control margin" v-model="election_filing_coc_start_input">
 
                         <label class="form-label" for="f-end">Filing End</label>
-                        <input type="datetime-local" class="form-control margin" v-model="election_filing_coc_end_input">
+                        <input type="datetime-local" class="form-control margin" v-model="election_filing_coc_end_input" :min="election_filing_coc_start_input">
                     </div>
                 </div>
 
@@ -198,8 +198,8 @@
         </div>
         <div>
             <div class="election-btn mb-4">
-                <ActionButton class="cancel" @click.prevent="returnPage" :disabled="submitting">Cancel</ActionButton>
-                <ActionButton class="create" @click.prevent="submit" :disabled="submitting">Create Election</ActionButton>
+                <!-- <ActionButton class="cancel" @click.prevent="returnPage" :disabled="submitting">Cancel</ActionButton> -->
+                <ActionButton class="create" @click.prevent="submit" :disabled="submitting">{{ createElectionButtonText }}</ActionButton>
             </div>
         </div>
     </div>
@@ -424,6 +424,9 @@
             nextFiveYears() {
                 return this.getNextFiveYears();
             },
+            createElectionButtonText() {
+                return this.submitting ? 'Creating..' : 'Create Election';
+            }
         },
         methods:{
             returnPage() {
@@ -613,29 +616,29 @@
                 }
 
                 // Check if datetimes are progressive
-                if (new Date(this.election_start_input) > new Date(this.election_end_input)) {
-                    return alert('Election start cannot be greater than election end');
+                if (new Date(this.election_start_input) >= new Date(this.election_end_input)) {
+                    return alert('Election start cannot be greater than or equal to election end');
                 }
-                if (new Date(this.election_filing_coc_start_input) > new Date(this.election_filing_coc_end_input)) {
-                    return alert('Filing start cannot be greater than filing end');
+                if (new Date(this.election_filing_coc_start_input) >= new Date(this.election_filing_coc_end_input)) {
+                    return alert('Filing start cannot be greater than or equal to filing end');
                 }
-                if (new Date(this.election_filing_coc_end_input) > new Date(this.election_campaign_start_input)) {
+                if (new Date(this.election_filing_coc_end_input) >= new Date(this.election_campaign_start_input)) {
                     return alert('Campaign start should be after filing end');
                 }
-                if (new Date(this.election_campaign_start_input) > new Date(this.election_campaign_end_input)) {
-                    return alert('Campaign start cannot be greater than campaign end');
+                if (new Date(this.election_campaign_start_input) >= new Date(this.election_campaign_end_input)) {
+                    return alert('Campaign start cannot be greater than or equal to campaign end');
                 }
-                if (new Date(this.election_campaign_end_input) > new Date(this.election_voting_start_input)) {
+                if (new Date(this.election_campaign_end_input) >= new Date(this.election_voting_start_input)) {
                     return alert('Voting start should be after campaign end');
                 }
-                if (new Date(this.election_voting_start_input) > new Date(this.election_voting_end_input)) {
-                    return alert('Voting start cannot be greater than voting end');
+                if (new Date(this.election_voting_start_input) >= new Date(this.election_voting_end_input)) {
+                    return alert('Voting start cannot be greater than or equal to voting end');
                 }
-                if (new Date(this.election_voting_end_input) > new Date(this.election_appeal_start_input)) {
+                if (new Date(this.election_voting_end_input) >= new Date(this.election_appeal_start_input)) {
                     return alert('Appeal start should be after voting end');
                 }
-                if (new Date(this.election_appeal_start_input) > new Date(this.election_appeal_end_input)) {
-                    return alert('Appeal start cannot be greater than appeal end');
+                if (new Date(this.election_appeal_start_input) >= new Date(this.election_appeal_end_input)) {
+                    return alert('Appeal start cannot be greater than or equal to appeal end');
                 }
 
                 // Create a set to store unique values

@@ -11,12 +11,16 @@
                 </h2>
             </div>
             <template v-if="!isPartylistLoading && party_list_status !== ''">
-                <div v-if="party_list_status === 'Pending'" class="col-6" style="text-align: end;">
+                <div v-if="party_list_status === 'Pending' && !makingPartylistDecision" class="col-6" style="text-align: end;">
                     <ActionButton @click.prevent="acceptPartylist" class="accept-button" style="margin-right: 2% !important; background-color: rgb(71, 182, 43);">Approve</ActionButton>
                     <ActionButton @click.prevent="rejectPartylist" class="my-2">Reject</ActionButton>
                 </div>
 
-                <div v-else-if="party_list_status !== 'Pending'" class="col-6" style="text-align: end;">
+                <div v-if="makingPartylistDecision" class="col-6" style="text-align: end;">
+                    <h1 style="font-weight: 800; font-size: 2rem; color: rgb(15, 15, 15);">Processing..</h1>
+                </div>
+
+                <div v-if="party_list_status !== 'Pending' && !makingPartylistDecision" class="col-6" style="text-align: end;">
                     <h1 v-if="party_list_status === 'Approved'" style="font-weight: 800; font-size: 2rem; color: rgb(71, 182, 43);">Approved</h1>
                     <h1 v-else-if="party_list_status === 'Rejected'" style="font-weight: 800; font-size: 2rem; color: #B90321">Rejected</h1>
                 </div>
@@ -151,6 +155,7 @@
             const id = ref(Number(props.id));
 
             const party_list_status = ref('');
+            const makingPartylistDecision = ref(false);
 
             const fetchPartylistData = async () => {
                 const response = await axios.get(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/partylist/${id.value}`);
@@ -178,6 +183,7 @@
                 type,
                 id,
                 party_list_status,
+                makingPartylistDecision,
 
                 partylistData,
                 isPartylistLoading,
@@ -210,6 +216,9 @@
                 const confirm = window.confirm('Are you sure you want to accept this Partylist?');
                 if (!confirm) return;
 
+                if (this.makingPartylistDecision) return;
+
+                this.makingPartylistDecision = true;
                 axios.put(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/partylist/${this.id}/accept`)
                     .then((response) => {
                         console.log(response);
@@ -219,11 +228,17 @@
                     .catch((error) => {
                         console.log(error);
                     })
+                    .finally(() => {
+                        this.makingPartylistDecision = false;
+                    })
             },
             rejectPartylist() {
                 const confirm = window.confirm('Are you sure you want to reject this Partylist?');
                 if (!confirm) return;
 
+                if (this.makingPartylistDecision) return;
+
+                this.makingPartylistDecision = true;
                 axios.put(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/partylist/${this.id}/reject`)
                     .then((response) => {
                         console.log(response);
@@ -232,6 +247,9 @@
                     })
                     .catch((error) => {
                         console.log(error);
+                    })
+                    .finally(() => {
+                        this.makingPartylistDecision = false;
                     })
             },
         },

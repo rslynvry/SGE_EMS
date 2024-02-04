@@ -11,12 +11,16 @@
                 </h2>
             </div>
             <template v-if="!isCoCLoading && coc_status !== ''">
-                <div v-if="coc_status === 'Pending'" class="col-6" style="text-align: end;">
+                <div v-if="coc_status === 'Pending' && !makingCoCDecision" class="col-6" style="text-align: end;">
                     <ActionButton @click.prevent="acceptCoC" class="accept-button" style="margin-right: 2% !important; background-color: rgb(71, 182, 43);">Approve</ActionButton>
                     <ActionButton @click.prevent="rejectCoC" class="my-2">Reject</ActionButton>
                 </div>
 
-                <div v-else class="col-6" style="text-align: end;">
+                <div v-if="makingCoCDecision" class="col-6" style="text-align: end;">
+                    <h1 style="font-weight: 800; font-size: 2rem; color: rgb(15, 15, 15);">Processing..</h1>
+                </div>
+
+                <div v-if="coc_status !== 'Pending' && !makingCoCDecision" class="col-6" style="text-align: end;">
                     <h1 v-if="coc_status === 'Approved'" style="font-weight: 800; font-size: 2rem; color: rgb(71, 182, 43);">Approved</h1>
                     <h1 v-else-if="coc_status === 'Rejected'" style="font-weight: 800; font-size: 2rem; color: #B90321">Rejected</h1>
                 </div>
@@ -236,6 +240,7 @@
             const id = ref(Number(props.id));
 
             const coc_status = ref('');
+            const makingCoCDecision = ref(false);
 
             const fetchCoCData = async () => {
                 const response = await axios.get(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/coc/${id.value}`);
@@ -263,6 +268,7 @@
                 type,
                 id,
                 coc_status,
+                makingCoCDecision,
 
                 CoCData,
                 isCoCLoading,
@@ -326,6 +332,11 @@
                 const confirm = window.confirm('Are you sure you want to accept this CoC?');
                 if (!confirm) return;
 
+                if (this.makingCoCDecision) {
+                    return;
+                }
+
+                this.makingCoCDecision = true;
                 axios.put(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/coc/${this.id}/accept`)
                     .then((response) => {
                         console.log(response);
@@ -334,11 +345,19 @@
                     .catch((error) => {
                         console.log(error);
                     })
+                    .finally(() => {
+                        this.makingCoCDecision = false;
+                    })
             },
             rejectCoC() {
                 const confirm = window.confirm('Are you sure you want to reject this CoC?');
                 if (!confirm) return;
 
+                if (this.makingCoCDecision) {
+                    return;
+                }
+
+                this.makingCoCDecision = true;
                 axios.put(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/coc/${this.id}/reject`)
                     .then((response) => {
                         console.log(response);
@@ -346,6 +365,9 @@
                     })
                     .catch((error) => {
                         console.log(error);
+                    })
+                    .finally(() => {
+                        this.makingCoCDecision = false;
                     })
             },
         },
