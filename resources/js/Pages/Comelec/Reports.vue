@@ -52,7 +52,7 @@
             </div>
         </div>
 
-        <div class="row" style="margin-top: 20px; margin-left: -25.8px;">
+        <div class="row" style="margin-top: 20px; margin-left: -25.8px;" v-show="select_election_input">
             <div class="col-4">
                 <BaseContainer :height="'auto'" :maxHeight="'600px'">
                     <div class="row">
@@ -114,11 +114,11 @@
             </div>
         </div>
 
-        <div class="header">
+        <div class="header" v-show="select_election_input">
             <h1 class="page-title" style="margin-top: 2%;">Registration Approvals</h1>
         </div>
 
-        <div class="row" style="margin-top: 15px; margin-left: -23px;">
+        <div class="row" style="margin-top: 15px; margin-left: -23px;" v-show="select_election_input">
             <div class="col-6" style="padding-right: 1.15%;">
                 <BaseContainer :height="'auto'" :maxHeight="'600px'">
                     <div class="col-12">
@@ -140,10 +140,10 @@
         </div>
 
         <div class="header">
-            <h1 class="page-title" style="margin-top: 2%;">Selected Election Candidates</h1>
+            <h1 v-if="select_election_input" class="page-title" style="margin-top: 2%;">Selected Election Candidates</h1>
         </div>
 
-        <div class="row" style="margin-top: 15px; margin-left: -23px;" v-show="candidates_list.length > 0">
+        <div class="row" style="margin-top: 15px; margin-left: -23px;" v-show="candidates_list.length > 0 && select_election_input">
             <div class="col-6" style="padding-right: 1.15%;">
                 <BaseContainer :height="'485px'" :maxHeight="'600px'">
                     <div class="row">
@@ -167,6 +167,7 @@
                                         <div class="spacing">
                                             <span class="candidate-name">{{ selected_candidate_name }}</span>
                                         </div>
+                                        <span class="etc">{{ selected_candidate_position_name }}</span>
                                         <span class="etc">{{ selected_candidate_partylist }}</span>
                                         <span class="etc">{{ selected_candidate_course_year_section }}</span>
                                         <span class="motto" v-if="selected_candidate_motto">“{{ selected_candidate_motto }}”</span>
@@ -193,7 +194,7 @@
             </div>
         </div>
 
-        <div class="row" style="margin-top: 15px; margin-left: -23px;" v-show="candidates_list.length > 0">
+        <div class="row" style="margin-top: 15px; margin-left: -23px;" v-show="candidates_list.length > 0 && select_election_input">
             <div class="col-6" style="padding-right: 1.15%;">
                 <BaseContainer :height="'auto'" :maxHeight="'600px'">
                     <div class="col-12">
@@ -214,7 +215,7 @@
             </div>
         </div>
 
-        <template v-if="candidates_list.length <= 0">
+        <template v-if="candidates_list.length <= 0 && select_election_input">
             <h4 class="my-4">No candidates under this election.</h4>
         </template>
 
@@ -259,6 +260,7 @@
             
             const selected_candidate_name = ref('');
             const selected_candidate_image = ref('');
+            const selected_candidate_position_name = ref('');
             const selected_candidate_partylist = ref('');
             const selected_candidate_course_year_section = ref('');
             const selected_candidate_motto = ref('');
@@ -501,6 +503,7 @@
                 select_candidate_input,
                 selected_candidate_name,
                 selected_candidate_image,
+                selected_candidate_position_name,
                 selected_candidate_partylist,
                 selected_candidate_course_year_section,
                 selected_candidate_motto,
@@ -1196,6 +1199,7 @@
 
                     this.selected_candidate_name = candidate.FullName;
                     this.selected_candidate_image = candidate.DisplayPhoto;
+                    this.selected_candidate_position_name = candidate.PositionName;
                     this.selected_candidate_partylist = candidate.PartyListName;
                     this.selected_candidate_course_year_section = candidate.CourseYearSection;
                     this.selected_candidate_motto = candidate.Motto;
