@@ -165,6 +165,12 @@ class ComelecController extends Controller
         return inertia('Comelec/DirectoryCertificationsCreate');
     }
 
+    public function directoryCertificationsSigned() 
+    { 
+        return inertia('Comelec/DirectoryCertificationsSigned');
+    }
+
+
     public function appealReview() 
     { 
         return inertia('Comelec/AppealReview');

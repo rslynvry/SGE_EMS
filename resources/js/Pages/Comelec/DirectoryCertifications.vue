@@ -4,11 +4,18 @@
     <Navbar></Navbar>
 
     <div class="components">
-        <div class="header">
-            <h2 class="my-1 page-title">
-                <span class="return" @click="returnPage">Directory</span> > Certifications
-            </h2>
-            <ActionButton @click="createCertification" class="create-button">Create</ActionButton>
+        <div class="row">
+            <div class="header">
+                <div class="col-8">
+                    <h2 class="my-1 page-title">
+                        <span class="return" @click="returnPage">Directory</span> > Certifications
+                    </h2>
+                </div>
+                <div class="col-4" style="text-align: end;">
+                    <ActionButton @click="viewSignedCertificates" class="mx-3">Signed Certificates</ActionButton>
+                    <ActionButton @click="createCertification">Create</ActionButton>
+                </div>
+            </div>
         </div>
      
         <BaseContainer class="item-container" :height="'auto'" :maxHeight="'75vh'">
@@ -86,6 +93,9 @@
         methods: {
             returnPage(){
                 router.visit('/comelec/directory');
+            },
+            viewSignedCertificates() {
+                router.visit('/comelec/directory/certifications/signed');
             },
             createCertification(){
                 router.visit('/comelec/directory/certifications/create');

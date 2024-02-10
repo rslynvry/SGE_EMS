@@ -35,7 +35,7 @@
                     :columns="['Student Number', 'Election Title', 'Organization', 'Status', 'Date Submitted']" 
                     :columnWidths=columnWidthsCoC
                     :tableHeight="'auto'"
-                    :maxTableHeight="'300px'"
+                    :maxTableHeight="'600px'"
                     v-if="!isCoCLoading && filterType === 'coc'">
                     <div>
                         <tr v-for="(item, coc_index) in CoCData" :key="coc_index" @click="selectCoCItem(item)">
@@ -52,7 +52,7 @@
                     :columns="['Party Name', 'Status', 'Date Submitted']" 
                     :columnWidths=columnWidthsParty
                     :tableHeight="'auto'"
-                    :maxTableHeight="'500px'"
+                    :maxTableHeight="'600px'"
                     v-if="!isPartylistLoading && filterType === 'party-list'">
                     <div>
                         <tr v-for="(item, index) in partylistData" :key="index" @click="selectPartyItem(item)">
@@ -100,14 +100,14 @@
                 const response = await axios.get(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/coc/all`);
                 console.log(`CoC table fetched successfully. Duration: ${response.duration}`)
 
-                return response.data.coc;
+                return response.data.coc.slice().reverse();
             }
 
             const fetchPartylistData = async () => {
                 const response = await axios.get(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/partylist/all`);
                 console.log(`Partylist table fetched successfully. Duration: ${response.duration}`)
 
-                return response.data.partylists;
+                return response.data.partylists.slice().reverse();
             }
 
             const { data: CoCData,

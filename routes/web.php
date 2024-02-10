@@ -105,6 +105,9 @@ Route::group(['middleware' => 'check.auth.comelec'], function () {
     Route::get('/comelec/directory/certifications/create', [ComelecController::class, 'directoryCertificationsCreate'])
         ->name('comelec.directory.certifications.create');
 
+    Route::get('/comelec/directory/certifications/signed', [ComelecController::class, 'directoryCertificationsSigned'])
+        ->name('comelec.directory.certifications.signed');
+
     Route::get('/comelec/appeal-review', [ComelecController::class, 'appealReview'])
         ->name('comelec.appeal.review');
 
