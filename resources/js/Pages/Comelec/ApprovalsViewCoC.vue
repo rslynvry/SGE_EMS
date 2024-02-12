@@ -13,7 +13,7 @@
             <template v-if="!isCoCLoading && coc_status !== ''">
                 <div v-if="coc_status === 'Pending' && !makingCoCDecision" class="col-6" style="text-align: end;">
                     <ActionButton @click.prevent="acceptCoC" class="accept-button" style="margin-right: 2% !important; background-color: rgb(71, 182, 43);">Approve</ActionButton>
-                    <ActionButton @click.prevent="rejectCoC" class="my-2">Reject</ActionButton>
+                    <ActionButton @click.prevent="openRejectModal" class="my-2">Reject</ActionButton>
                 </div>
 
                 <div v-if="makingCoCDecision" class="col-6" style="text-align: end;">
@@ -71,6 +71,28 @@
                             :containerMargin="'0% -0%'"
                             :itemMargin="'0em'">
                     </ImageSkeleton>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" v-if="isRejectModalOpen">
+            <div class="modal-content">
+                <div style="text-align: center;">
+                    <h2>Reject CoC</h2>
+                </div>
+                <p>Please add a reason for rejecting the CoC:
+                    <ToolTip class="mx-1">
+                        <slot>
+                            This will be sent to the corresponding email of the student.
+                        </slot>
+                    </ToolTip>
+                </p>
+                
+                <textarea class="form-control text-area-input" style="height: 250px;" type="text" name="name" v-model="rejectReason"></textarea>
+
+                <div class="button" style="margin-top: 20px;">
+                    <ActionButton style="margin-right: 15px;" @click.prevent="rejectCoC" :disabled="makingCoCDecision">{{ confirmRejectTextButton }}</ActionButton>
+                    <ActionButton @click.prevent="isRejectModalOpen = false" :disabled="makingCoCDecision">Cancel</ActionButton>
                 </div>
             </div>
         </div>
@@ -230,6 +252,7 @@
     import BaseContainer from '../../Shared/BaseContainer.vue';
     import BaseTable from '../../Shared/BaseTable.vue';
     import ImageSkeleton from '../../Skeletons/ImageSkeleton.vue';
+    import ToolTip from '../../Shared/Tooltip.vue';
 
     import { useQuery, useMutation, useQueryClient  } from "@tanstack/vue-query";
     import axios from 'axios';
@@ -240,6 +263,9 @@
             const id = ref(Number(props.id));
 
             const coc_status = ref('');
+            const isRejectModalOpen = ref(false);
+            const rejectReason = ref('');
+
             const makingCoCDecision = ref(false);
 
             const fetchCoCData = async () => {
@@ -268,6 +294,9 @@
                 type,
                 id,
                 coc_status,
+                isRejectModalOpen,
+                rejectReason,
+
                 makingCoCDecision,
 
                 CoCData,
@@ -276,7 +305,7 @@
                 CoCError,
             }
         },
-        components: { Navbar, Sidebar, ActionButton, BaseContainer, BaseTable, ActionButton, ImageSkeleton },
+        components: { Navbar, Sidebar, ActionButton, BaseContainer, BaseTable, ActionButton, ImageSkeleton, ToolTip },
         props: {
             type: '',
             id: '',
@@ -310,6 +339,9 @@
                 else if (this.CoCData.Student.Semester === 3) {
                     return '3rd Semester';
                 } 
+            },
+            confirmRejectTextButton(){
+                return this.makingCoCDecision ? 'Processing..' : 'Confirm';
             }
         },
         methods: {
@@ -349,32 +381,70 @@
                         this.makingCoCDecision = false;
                     })
             },
+            openRejectModal() {
+                this.isRejectModalOpen = true;
+            },
             rejectCoC() {
-                const confirm = window.confirm('Are you sure you want to reject this CoC?');
-                if (!confirm) return;
+                /*const confirm = window.confirm('Are you sure you want to reject this CoC?');
+                if (!confirm) return; */
+
+                if (this.rejectReason === '') {
+                    alert('Please add a reason for rejecting the CoC.');
+                    return;
+                }
 
                 if (this.makingCoCDecision) {
                     return;
                 }
 
+                // make form data for the reject reason
+                const formData = new FormData();
+                formData.append('reject_reason', this.rejectReason);
+
                 this.makingCoCDecision = true;
-                axios.put(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/coc/${this.id}/reject`)
-                    .then((response) => {
-                        console.log(response);
-                        this.coc_status = 'Rejected';
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    })
-                    .finally(() => {
-                        this.makingCoCDecision = false;
-                    })
+                axios.put(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/coc/${this.id}/reject`, formData, {
+                })
+                .then((response) => {
+                    console.log(response);
+                    this.coc_status = 'Rejected';
+                    this.rejectReason = '';
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    this.makingCoCDecision = false;
+                    this.isRejectModalOpen = false;
+                })
             },
         },
     }
 </script>
 
 <style scoped>
+    .modal {
+        display: block; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+        /* Modal Content */
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 40%;
+        max-height: 70%;
+        overflow: auto;
+    }
     .utilities{
         margin-bottom: 1%;
     }

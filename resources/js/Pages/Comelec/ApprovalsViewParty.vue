@@ -13,7 +13,7 @@
             <template v-if="!isPartylistLoading && party_list_status !== ''">
                 <div v-if="party_list_status === 'Pending' && !makingPartylistDecision" class="col-6" style="text-align: end;">
                     <ActionButton @click.prevent="acceptPartylist" class="accept-button" style="margin-right: 2% !important; background-color: rgb(71, 182, 43);">Approve</ActionButton>
-                    <ActionButton @click.prevent="rejectPartylist" class="my-2">Reject</ActionButton>
+                    <ActionButton @click.prevent="openRejectModal" class="my-2">Reject</ActionButton>
                 </div>
 
                 <div v-if="makingPartylistDecision" class="col-6" style="text-align: end;">
@@ -59,6 +59,28 @@
                             :itemMargin="'0em'">
                     </ImageSkeleton>
                     
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" v-if="isRejectModalOpen">
+            <div class="modal-content">
+                <div style="text-align: center;">
+                    <h2>Reject Partylist</h2>
+                </div>
+                <p>Please add a reason for rejecting this partylist:
+                    <ToolTip class="mx-1">
+                        <slot>
+                            This will be sent to the corresponding email of the partylist.
+                        </slot>
+                    </ToolTip>
+                </p>
+                
+                <textarea class="form-control text-area-input" style="height: 250px;" type="text" name="name" v-model="rejectReason"></textarea>
+
+                <div class="button" style="margin-top: 20px;">
+                    <ActionButton style="margin-right: 15px;" @click.prevent="rejectPartylist" :disabled="makingPartylistDecision">{{ confirmRejectTextButton }}</ActionButton>
+                    <ActionButton @click.prevent="isRejectModalOpen = false" :disabled="makingPartylistDecision">Cancel</ActionButton>
                 </div>
             </div>
         </div>
@@ -145,6 +167,7 @@
     import BaseContainer from '../../Shared/BaseContainer.vue';
     import BaseTable from '../../Shared/BaseTable.vue';
     import ImageSkeleton from '../../Skeletons/ImageSkeleton.vue';
+    import ToolTip from '../../Shared/Tooltip.vue';
 
     import { useQuery, useMutation, useQueryClient  } from "@tanstack/vue-query";
     import axios from 'axios';
@@ -155,6 +178,9 @@
             const id = ref(Number(props.id));
 
             const party_list_status = ref('');
+            const isRejectModalOpen = ref(false);
+            const rejectReason = ref('');
+
             const makingPartylistDecision = ref(false);
 
             const fetchPartylistData = async () => {
@@ -183,6 +209,9 @@
                 type,
                 id,
                 party_list_status,
+                isRejectModalOpen,
+                rejectReason,
+
                 makingPartylistDecision,
 
                 partylistData,
@@ -191,10 +220,15 @@
                 partylistError,
             }
         },
-        components: { Navbar, Sidebar, ActionButton, BaseContainer, BaseTable, ActionButton, ImageSkeleton },
+        components: { Navbar, Sidebar, ActionButton, BaseContainer, BaseTable, ActionButton, ImageSkeleton, ToolTip },
         props: {
             type: '',
             id: '',
+        },
+        computed:{
+            confirmRejectTextButton() {
+                return this.makingPartylistDecision ? 'Processing..' : 'Confirm';
+            }
         },
         methods: {
             returnPage() {
@@ -232,24 +266,39 @@
                         this.makingPartylistDecision = false;
                     })
             },
+            openRejectModal() {
+                this.isRejectModalOpen = true;
+            },
             rejectPartylist() {
-                const confirm = window.confirm('Are you sure you want to reject this Partylist?');
-                if (!confirm) return;
+                /* const confirm = window.confirm('Are you sure you want to reject this Partylist?');
+                if (!confirm) return; */
+
+                if (this.rejectReason === '') {
+                    alert('Please add a reason for rejecting the CoC.');
+                    return;
+                }
 
                 if (this.makingPartylistDecision) return;
 
+                // make form data for the reject reason
+                const formData = new FormData();
+                formData.append('reject_reason', this.rejectReason);
+
                 this.makingPartylistDecision = true;
-                axios.put(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/partylist/${this.id}/reject`)
+                axios.put(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/partylist/${this.id}/reject`, formData, {
+                    })
                     .then((response) => {
                         console.log(response);
 
                         this.party_list_status = 'Rejected';
+                        this.rejectReason = '';
                     })
                     .catch((error) => {
                         console.log(error);
                     })
                     .finally(() => {
                         this.makingPartylistDecision = false;
+                        this.isRejectModalOpen = false;
                     })
             },
         },
@@ -257,6 +306,30 @@
 </script>
 
 <style scoped>
+    .modal {
+        display: block; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+        /* Modal Content */
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 40%;
+        max-height: 70%;
+        overflow: auto;
+    }
+
     .utilities{
         margin-bottom: 1%;
     }
