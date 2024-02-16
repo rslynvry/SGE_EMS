@@ -4,7 +4,7 @@
             @mouseover="showInfo = true" 
             @mouseleave="showInfo = false">
         </i>
-        <div v-show="showInfo" style="padding: 3px 3px; background-color: rgb(36, 36, 36); position: absolute; left: 140%; top: 50%; transform: translateY(-50%); border: white 1px solid; border-top-left-radius: 7px; border-bottom-left-radius: 7px; min-width: 350px;">
+        <div v-show="showInfo" style="padding: 3px 3px; background-color: rgb(36, 36, 36); position: absolute; left: 140%; top: 50%; transform: translateY(-50%); border: white 1px solid; border-top-left-radius: 7px; border-bottom-left-radius: 7px;">
             <p v-show="showInfo" class="tool" style="text-align: justify;">
                 <slot></slot>
             </p>
@@ -43,6 +43,7 @@
         margin: 0;
         padding: 5px;
         word-wrap: break-word; /* Enable word wrapping */
-        max-width: 350px; /* Optional: Set a maximum width for the tooltip */
+        width: max-content;
+        max-width: 350px; /* Set a maximum width for the tooltip */
     }
 </style>
