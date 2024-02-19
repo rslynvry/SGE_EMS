@@ -107,7 +107,7 @@
 
             const { data: certificationsData, isLoading, isSuccess, isError, refetch } = 
                 useQuery({
-                    queryKey: ['fetchCertifications'],
+                    queryKey: ['fetchCertificationsSigned'],
                     queryFn: fetchCertificationsSigned,
                 });
 

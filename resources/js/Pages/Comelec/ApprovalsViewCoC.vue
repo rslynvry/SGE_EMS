@@ -105,36 +105,36 @@
                     </div>
                     <div class="box">
                         <div class="first-info">
-                            <label class="form-label" for="name">Student Number</label>
+                            <h6 class="form-label" for="name">Student Number</h6>
                             <input class="form-control" type="text" name="name" v-model="CoCData.StudentNumber" :disabled="true">
                         </div>
                         
                         <div class="margin">
                             <div class="row">
                                 <div class="col-4">
-                                    <label class="form-label" for="type">First Name</label>
+                                    <h6 class="form-label" for="type">First Name</h6>
                                     <input class="form-control" type="text" name="name" v-model="CoCData.Student.FirstName" :disabled="true">
                                 </div>
 
                                 <div class="col-4">
-                                    <label class="form-label" for="type">Middle Name</label>
+                                    <h6 class="form-label" for="type">Middle Name</h6>
                                     <input class="form-control" type="text" name="name" v-model="CoCData.Student.MiddleName" :disabled="true">
                                 </div>
 
                                 <div class="col-4">
-                                    <label class="form-label" for="type">Last Name</label>
+                                    <h6 class="form-label" for="type">Last Name</h6>
                                     <input class="form-control" type="text" name="name" v-model="CoCData.Student.LastName" :disabled="true">
                                 </div>
                             </div>
                         </div>
 
                         <div class="margin">
-                            <label class="form-label" for="type">Motto</label>
+                            <h6 class="form-label" for="type">Motto</h6>
                             <textarea class="form-control text-area-input" type="text" name="name" v-model="CoCData.Motto" :disabled="true"></textarea>
                         </div>
 
                         <div class="margin">
-                            <label class="form-label" for="type">Email Address</label>
+                            <h6 class="form-label" for="type">Email Address</h6>
                             <input class="form-control" type="text" name="name" v-model="CoCData.Student.Email" :disabled="true">
                         </div>
                     </div>
@@ -145,32 +145,32 @@
 
                     <div class="box">
                         <div class="first-info">
-                            <label class="form-label" for="type">Election Title Applied</label>
+                            <h6 class="form-label" for="type">Election Title Applied</h6>
                             <input class="form-control" type="text" name="name" v-model="CoCData.ElectionName" :disabled="true">
                         </div>
 
                         <div class="margin">
-                            <label class="form-label" for="type">Organization</label>
+                            <h6 class="form-label" for="type">Organization</h6>
                             <input class="form-control" type="text" name="name" v-model="CoCData.StudentOrganizationName" :disabled="true">
                         </div>
 
                         <div class="margin">
-                            <label class="form-label" for="type">Political Affiliation</label>
+                            <h6 class="form-label" for="type">Political Affiliation</h6>
                             <input class="form-control" type="text" name="name" v-model="CoCData.PoliticalAffiliation" :disabled="true">
                         </div>
 
                         <div v-if="CoCData.PoliticalAffiliation !== 'Independent'" class="margin">
-                            <label class="form-label" for="type">Party List</label>
+                            <h6 class="form-label" for="type">Party List</h6>
                             <input class="form-control" type="text" name="name" v-model="CoCData.PartyListName" :disabled="true">
                         </div>
 
                         <div class="margin">
-                            <label class="form-label" for="type">Position Selected</label>
+                            <h6 class="form-label" for="type">Position Selected</h6>
                             <input class="form-control" type="text" name="name" v-model="CoCData.SelectedPositionName" :disabled="true">
                         </div>       
 
                         <div class="margin">
-                            <label class="form-label" for="type">Platforms</label>
+                            <h6 class="form-label" for="type">Platforms</h6>
                             <textarea class="form-control text-area-input" type="text" name="name" v-model="CoCData.Platform" :disabled="true"></textarea>
                         </div>
                     </div>
@@ -183,13 +183,13 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="first-info">
-                                    <label class="form-label" for="type">Course</label>
+                                    <h6 class="form-label" for="type">Course</h6>
                                     <input class="form-control" type="text" name="name" v-model="CoCData.Student.CourseCode" :disabled="true">
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="first-info">
-                                    <label class="form-label" for="type">Current Semester Enrolled</label>
+                                    <h6 class="form-label" for="type">Current Semester Enrolled</h6>
                                     <input class="form-control" type="text" name="name" v-model="getSemester" :disabled="true">
                                 </div>
                             </div>
@@ -198,21 +198,37 @@
                         <div class="row my-2">
                             <div class="col-6">
                                 <div class="margin">
-                                    <label class="form-label" for="type">Year Level</label>
+                                    <h6 class="form-label" for="type">Year Level</h6>
                                     <input class="form-control" type="text" name="name" v-model="yearLevel" :disabled="true">
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="margin">
-                                    <label class="form-label" for="type">Section</label>
+                                    <h6 class="form-label" for="type">Section</h6>
                                     <input class="form-control" type="text" name="name" v-model="CoCData.Student.Section" :disabled="true">
                                 </div>
                             </div>
                         </div>            
                     </div>
                 </div>
-
+                
                 <div class="col-6">
+                    <template v-if="CoCData.Student.ClassGrade > 3 && !isCoCLoading">
+                        <div class="note-timeline">
+                            <h6 class="mx-3">Grades Information (According to SPS)</h6>
+                        </div>
+                        <div class="box" style="height: 85px;">
+                            <div class="row">
+                                <div class="col-1">
+                                    <i class="fas fa-exclamation-triangle" style="color: #FFD43B; margin-top: -27%;"></i>
+                                </div>
+                                <div class="col-11">
+                                    <h6>This student has an average grade of {{ CoCData.Student.ClassGrade }}, which is considered failed.</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
                     <div class="note-timeline">
                         <h6 class="mx-3">Attachments (Click to view in fullsize)</h6>
 
@@ -422,6 +438,10 @@
 </script>
 
 <style scoped>
+    .fas.fa-exclamation-triangle {
+        font-size: 35px;
+    }
+
     .modal {
         display: block; /* Hidden by default */
         position: fixed; /* Stay in place */

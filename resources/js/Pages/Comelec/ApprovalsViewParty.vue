@@ -93,37 +93,37 @@
                     </div>
                     <div class="box">
                         <div class="first-info">
-                            <label class="form-label" for="name">Party Name</label>
+                            <h6 class="form-label" for="name">Party Name</h6>
                             <input class="form-control" type="text" name="name" v-model="partylistData.PartyListName" :disabled="true">
                         </div>
 
                         <div class="margin">
-                            <label class="form-label" for="type">Email Address</label>
+                            <h6 class="form-label" for="type">Email Address</h6>
                             <input class="form-control" type="text" name="name" v-model="partylistData.EmailAddress" :disabled="true">
                         </div>
 
                         <div class="margin">
-                            <label class="form-label" for="type">Cellphone Number</label>
+                            <h6 class="form-label" for="type">Cellphone Number</h6>
                             <input class="form-control" type="text" name="name" v-model="partylistData.CellphoneNumber" :disabled="true">
                         </div>
 
                         <div class="margin">
-                            <label for="desc" class="form-label">Description</label>
+                            <h6 for="desc" class="form-label">Description</h6>
                             <textarea class="form-control text-area-input" type="text" name="desc" v-model="partylistData.Description" :disabled="true"></textarea>
                         </div>
 
                         <div class="margin">
-                            <label for="desc" class="form-label">Mission</label>
+                            <h6 for="desc" class="form-label">Mission</h6>
                             <textarea class="form-control text-area-input" type="text" name="desc" v-model="partylistData.Mission" :disabled="true"></textarea>
                         </div>
 
                         <div class="margin">
-                            <label for="desc" class="form-label">Vision</label>
+                            <h6 for="desc" class="form-label">Vision</h6>
                             <textarea class="form-control text-area-input" type="text" name="desc" v-model="partylistData.Vision" :disabled="true"></textarea>
                         </div>
 
                         <div class="margin">
-                            <label for="desc" class="form-label">Platforms</label>
+                            <h6 for="desc" class="form-label">Platforms</h6>
                             <textarea class="form-control text-area-input" type="text" name="desc" v-model="partylistData.Platforms" :disabled="true"></textarea>
                         </div>
                     </div>
