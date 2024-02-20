@@ -8,6 +8,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\Organization;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Election;
+use App\Models\StudentOrganization;
 
 class OrganizationController extends Controller
 {
@@ -22,10 +23,13 @@ class OrganizationController extends Controller
         $student = $organization->getStudentByStudentNumber;
 
         // Organization columns
-        $organization_id = $organization->OrganizationId;
+        $organization_id = $organization->StudentOrganizationId;
         $student_number = $organization->StudentNumber;
-        $officer_position_id = $organization->OfficerPositionId;
-        $organization_name = $organization->OrganizationName;
+        $position = $organization->Position;
+
+        // Get the officer's StudentOrganization id
+        $student_organization_id = $organization->StudentOrganizationId;
+        $student_organization_name = StudentOrganization::where('StudentOrganizationId', $student_organization_id)->first()->OrganizationName;
 
         // Student columns
         $first_name = $student->FirstName;
@@ -35,13 +39,14 @@ class OrganizationController extends Controller
         $email_address = $student->EmailAddress;
 
         return Inertia::render('Organization/Elections', [
-            'student_number' => $student_number,
             'organization_id' => $organization_id,
-            'organization_name' => $organization_name,
-            'officer_position_id' => $officer_position_id,
-            'user_role' => 'organization',
+            'student_number' => $student_number,
             'full_name' => $full_name,
-        ]);    
+            'position' => $position,
+            'user_role' => 'organization',
+            'student_organization_id' => $student_organization_id,
+            'student_organization_name' => $student_organization_name,
+        ]);
     }
 
     public function electionsCreate() {

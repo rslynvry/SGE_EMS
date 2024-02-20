@@ -11,6 +11,9 @@ export const useUserStore = defineStore('user', () => {
     const organization_name = useLocalStorage('organization_name', '');
     const organization_position_id = useLocalStorage('organization_position_id', '');
 
+    const student_organization_id = useLocalStorage('student_organization_id', '');
+    const student_organization_name = useLocalStorage('student_organization_name', '');
+
     const reset = () => {
         id.value = '';
         student_number.value = '';
@@ -18,7 +21,18 @@ export const useUserStore = defineStore('user', () => {
         user_role.value = '';
         organization_name.value = '';
         organization_position_id.value = '';
+        student_organization_id.value = '';
+        student_organization_name.value = '';
     };
     
-    return { id, student_number, full_name, user_role, organization_name, organization_position_id, reset };
+    return { id, 
+            student_number, 
+            full_name, 
+            user_role, 
+            organization_name, 
+            organization_position_id, 
+            student_organization_id, 
+            student_organization_name, 
+            reset 
+        };
 });
