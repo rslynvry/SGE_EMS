@@ -146,7 +146,7 @@ export default {
         const queryClient = new useQueryClient();
 
         const fetchAnnouncementTable = async () => {
-            const response = await axios.get(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/announcement/all`);
+            const response = await axios.get(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/announcement/ascending/all`);
 
             return response.data.announcements.map(item => {
                 return {
