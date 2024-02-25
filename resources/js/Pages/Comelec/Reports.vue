@@ -30,22 +30,22 @@
 
                     </div>
                     <div class="row">
-                        <div class="col-3" style="display: flex; align-items: center;">
+                        <div class="col-4" style="display: flex; align-items: center;">
                             <span class="election-metadata">Semester:</span>
                             <span class="election-data mx-2">{{ selected_election_semester }}</span>
                         </div>
-                        <div class="col-3" style="display: flex; align-items: center;">
+                        <div class="col-4" style="display: flex; align-items: center;">
                             <span class="election-metadata">School Year:</span>
                             <span class="election-data mx-2">{{ selected_election_school_year }}</span>
                         </div>
-                        <div class="col-3" style="display: flex; align-items: center;">
+                        <div class="col-4" style="display: flex; align-items: center;">
                             <span class="election-metadata">Course Requirement:</span>
                             <span class="election-data mx-2">{{ selected_election_course_requirement }}</span>
                         </div>
-                        <div class="col-3" style="display: flex; align-items: center;">
+                        <!-- <div class="col-3" style="display: flex; align-items: center;">
                             <span class="election-metadata">Current Period:</span>
                             <span class="election-data mx-2">{{ selected_election_current_period }}</span>
-                        </div>
+                        </div> -->
 
                     </div>
                 </BaseContainer>

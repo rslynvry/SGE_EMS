@@ -19,7 +19,7 @@
             </div>
 
             <BaseTable class="item-table" 
-                :columns="['ID', 'Title', 'Organization', 'School Year', 'Created By', 'Start of Election', 'Date Created', 'Period']" 
+                :columns="['ID', 'Title', 'Organization', 'School Year', 'Created By', 'Start of Election', 'Date Created']" 
                 :columnWidths=columnWidths
                 :tableHeight="'auto'"
                 :maxTableHeight="'550px'">
@@ -31,7 +31,6 @@
                     <td :style="{ width: columnWidths[4] }" class="my-cell">{{ item.created_by_name }}</td>
                     <td :style="{ width: columnWidths[5] }" class="my-cell">{{ item.election_start }}</td>
                     <td :style="{ width: columnWidths[6] }" class="my-cell">{{ item.date_created }}</td>
-                    <td :style="{ width: columnWidths[7] }" class="my-cell">{{ item.period }}</td>
                 </tr>
 
             </BaseTable>
@@ -75,7 +74,7 @@
             const searchQuery = ref('');
 
             const items = ref([]);
-            const columnWidths = ['10%', '20%', '20%', '20%', '20%', '20%', '20%', '10%'];
+            const columnWidths = ['10%', '20%', '20%', '20%', '20%', '20%', '20%'];
             
             const fetchElectionsTable = async () => {
                 const response = await axios.get(`${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/election/all`);
