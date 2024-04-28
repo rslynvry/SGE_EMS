@@ -996,10 +996,18 @@
                     tooltips: {
                         enabled: true
                     },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                            }
+                        }
+                    },
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Ratings',
+                            text: 'Ratings (Each star received)',
                             font: {
                                 size: 15,
                                 family: 'Inter',
@@ -1460,6 +1468,11 @@
     }
 
     .platform{
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 6;
+        -webkit-box-orient: vertical;
         margin: -20px 0px;
         font-size: 16px;
         text-align: justify;
