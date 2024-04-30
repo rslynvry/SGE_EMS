@@ -855,7 +855,7 @@
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Votes',
+                            text: 'Votes & Abstains',
                             font: {
                                 size: 15,
                                 family: 'Inter',
@@ -903,7 +903,7 @@
             });
 
             this.instance_candidate_votes_by_course = new Chart(candidate_votes_by_course_chart, {
-                type: 'radar',
+                type: 'bar',
                 data: {
                     labels: this.data_candidate_votes_by_course.map(item => item.label),
                     datasets: [{
@@ -923,10 +923,18 @@
                     tooltips: {
                         enabled: true
                     },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                            }
+                        }
+                    },
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Votes by Course',
+                            text: 'Votes Received by Course',
                             font: {
                                 size: 15,
                                 family: 'Inter',
