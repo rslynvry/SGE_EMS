@@ -1,11 +1,17 @@
 <template>
-    <title>Reports - EMS</title>
+    <title>ANALYTICS - EMS</title>
     <Sidebar></Sidebar>
     <Navbar></Navbar>
 
     <div class="components">
-        <div class="header">
-            <h1 class="page-title">REPORTS</h1>
+        <div class="header" style="margin-right: 0%;">
+            <div class="col-8">
+                <h1 class="page-title">ANALYTICS</h1>
+            </div>
+            <div class="col-4" style="text-align: end;">
+                <ActionButton style="margin-right: 3%;" @click="viewVotingReceipt" :disabled="selected_election_name === ''">View Voting Receipts</ActionButton>
+                <ActionButton @click="exportAnalytics" :disabled="selected_election_name === ''">Export</ActionButton>
+            </div>
         </div>
         
         <div class="row" style="margin-left: -1%;">
@@ -1081,6 +1087,35 @@
             },
             certifications(){
                 router.visit('/comelec/directory/certifications');
+            },
+            viewVotingReceipt(){
+                router.visit(`/comelec/analytics/voting-receipts`, {
+                    data: {
+                        id: this.select_election_input,
+                        election_name: this.selected_election_name
+                    }
+                })
+            },
+            exportAnalytics(){
+                //const endpoint = `/comelec/analytics/export?id=${this.select_election_input}&election_name=${this.selected_election_name}`;
+
+                //window.location.href = endpoint;
+
+                axios({
+                  url: `${import.meta.env.VITE_FASTAPI_BASE_URL}/api/v1/votings/election/${this.select_election_input}/export`,
+                  method: 'GET',
+                  responseType: 'blob', // important
+                })
+                .then((response) => {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    
+                    link.href = url;
+                    link.setAttribute('download', `${this.selected_election_name}-Analytics.pdf`); // replace with actual student number attribute
+
+                    document.body.appendChild(link);
+                    link.click();
+                })
             },
             getPercentageInGraph(value, chart) {
                 if (value >= 1) {

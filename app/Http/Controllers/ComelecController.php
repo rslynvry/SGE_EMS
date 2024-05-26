@@ -11,6 +11,9 @@ use App\Models\CoC;
 use App\Models\PartyList;
 use App\Models\ElectionAppeals;
 
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AnalyticsExport;
+
 class ComelecController extends Controller
 {   
     // Landing page for Comelec after logging in
@@ -179,6 +182,22 @@ class ComelecController extends Controller
     public function reports() 
     { 
         return inertia('Comelec/Reports');
+    }
+
+    public function reportsVotingReceipts(Request $request) 
+    { 
+        return inertia('Comelec/AnalyticsVotingReceipts', [
+            'id' => $request->id,
+            'election_name' => $request->election_name,
+        ]);
+    }
+
+    public function reportsExport(Request $request) 
+    {
+        $id = $request->id;
+        $election_name = $request->election_name;
+
+        return Excel::download(new AnalyticsExport($id, $election_name), $election_name . '-Analytics.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
 
     public function appointments() 

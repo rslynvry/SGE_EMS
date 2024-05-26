@@ -111,8 +111,14 @@ Route::group(['middleware' => 'check.auth.comelec'], function () {
     Route::get('/comelec/appeal-review', [ComelecController::class, 'appealReview'])
         ->name('comelec.appeal.review');
 
-    Route::get('/comelec/reports', [ComelecController::class, 'reports'])
+    Route::get('/comelec/analytics', [ComelecController::class, 'reports'])
         ->name('comelec.reports');
+
+    Route::get('/comelec/analytics/voting-receipts', [ComelecController::class, 'reportsVotingReceipts'])
+        ->name('comelec.reports.voting.receipts');
+
+    Route::get('/comelec/analytics/export', [ComelecController::class, 'reportsExport'])
+        ->name('comelec.reports.export');
 
     Route::get('/comelec/appointments', [ComelecController::class, 'appointments'])
         ->name('comelec.appointments');

@@ -109,19 +109,6 @@
                             <input type="datetime-local" class="form-control margin" v-model="election_voting_end_input" :disabled="true"> 
                         </div>
                     </div>
-
-                    <hr class="my-4">
-
-                    <div class="row">
-                        <label for="filing-period" class="col-3 col-form-label">Appeal Period</label>
-                        <div class="col-5">
-                            <label class="form-label" for="a-start">Appeal Start</label>
-                            <input type="datetime-local" class="form-control margin" v-model="election_appeal_start_input" :disabled="true">
-
-                            <label class="form-label" for="a-end">Appeal End</label>
-                            <input type="datetime-local" class="form-control" v-model="election_appeal_end_input" :disabled="true">
-                        </div>
-                    </div>
                 </div>
             </div>
 

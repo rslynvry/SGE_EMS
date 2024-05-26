@@ -90,18 +90,11 @@ export default {
                     <span>Directory</span>
                 </Link>
 
-                <Link href="/comelec/appeal-review" 
-                    :class="{ 'active': $inertia.page.url.startsWith('/comelec/appeal-review') }" 
-                    class="main list-group-item py-2">
-                    <img class="side-icon" src="../../images/icons/appeal.svg" alt="Icon" height="35" width="35">
-                    <span>Appeal Review</span>
-                </Link>
-
-                <Link href="/comelec/reports"
-                    :class="{ 'active': $inertia.page.url.startsWith('/comelec/reports') }"  
+                <Link href="/comelec/analytics"
+                    :class="{ 'active': $inertia.page.url.startsWith('/comelec/analytics') }"  
                     class="main list-group-item py-2">
                     <img class="side-icon" src="../../images/icons/reports.svg" alt="Icon" height="35" width="35">
-                    <span>Reports</span>
+                    <span>Analytics</span>
                 </Link>
                 
                 <!-- <Link href="/comelec/appointments" 
