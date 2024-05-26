@@ -591,12 +591,6 @@
                 if (this.election_voting_end_input === '') {
                     return alert('Voting end cannot be empty');
                 }
-                if (this.election_appeal_start_input === '') {
-                    return alert('Appeal start cannot be empty');
-                }
-                if (this.election_appeal_end_input === '') {
-                    return alert('Appeal end cannot be empty');
-                }
 
                 // Check if datetimes are progressive
                 if (new Date(this.election_start_input) >= new Date(this.election_end_input)) {
@@ -616,12 +610,6 @@
                 }
                 if (new Date(this.election_voting_start_input) >= new Date(this.election_voting_end_input)) {
                     return alert('Voting start cannot be greater than or equal to voting end');
-                }
-                if (new Date(this.election_voting_end_input) >= new Date(this.election_appeal_start_input)) {
-                    return alert('Appeal start should be after voting end');
-                }
-                if (new Date(this.election_appeal_start_input) >= new Date(this.election_appeal_end_input)) {
-                    return alert('Appeal start cannot be greater than or equal to appeal end');
                 }
 
                 // Create a set to store unique values
@@ -678,8 +666,8 @@
                     campaign_end: this.election_campaign_end_input,
                     voting_start: this.election_voting_start_input,
                     voting_end: this.election_voting_end_input,
-                    appeal_start: this.election_appeal_start_input,
-                    appeal_end: this.election_appeal_end_input,
+                    appeal_start: this.election_voting_end_input,
+                    appeal_end: this.election_voting_end_input,
                     created_by: this.createdByStudentNumber
                 };
 
